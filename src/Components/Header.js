@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import { Link, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { motion } from "framer-motion";
@@ -40,7 +41,7 @@ const Items = styled.ul`
   align-items: center;
 `;
 
-const Itme = styled.li`
+const Item = styled.li`
   margin-right: 20px;
   color: black;
   transition: color 0.3s ease-in-out;
@@ -69,6 +70,14 @@ const Circle = styled(motion.span)`
 
 // -----------------------모바일 헤더 ------------------------
 
+const Hr = styled.hr`
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 5rem;
+  color: #8b8687;
+`;
+
 const Mobile = styled.nav`
   background-color: white;
   color: gray;
@@ -85,27 +94,53 @@ const Mobile = styled.nav`
   line-height: 1rem;
 `;
 
-const MobileItem = styled.a`
+const MobileItemHome = styled.a`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 20px;
-  color: black;
+  color: ${(props) => (props.homeMatch ? "#2b90d9" : "gray")};
   font-size: large;
   :hover {
-    color: gray;
+    color: #2b90d9;
+  }
+`;
+
+const MobileItemResume = styled.a`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  color: ${(props) => (props.resumeMatch ? "#2b90d9" : "gray")};
+  font-size: large;
+  :hover {
+    color: #2b90d9;
+  }
+`;
+
+const MobileItemProfile = styled.a`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  color: ${(props) => (props.profileMatch ? "#2b90d9" : "gray")};
+  font-size: large;
+  :hover {
+    color: #2b90d9;
   }
 `;
 
 const MobileSpan = styled.span`
   font-size: small;
-  padding: 2px;
+  padding-top: 5px;
 `;
 
 function Header() {
   const loginAndProfile = false;
   const resumeMatch = useMatch("/resume");
   const homeMatch = useMatch("/");
+  const profileMatch = useMatch("/profile");
+  console.log(resumeMatch, homeMatch, profileMatch);
 
   // 반응형 헤더 만들기
   const [screen, setScreen] = useState(window.outerWidth);
@@ -138,35 +173,35 @@ function Header() {
           <Col>
             <Logo />
             <Items>
-              <Itme>
+              <Item>
                 <Link to={"/resume"}>
                   내 이력서{" "}
                   {resumeMatch?.pathname === "/resume" && (
                     <Circle layoutId="circle" />
                   )}
                 </Link>
-              </Itme>
-              <Itme>
+              </Item>
+              <Item>
                 <Link to={"/"}>
                   채용 공고 {homeMatch && <Circle layoutId="circle" />}
                 </Link>
-              </Itme>
+              </Item>
             </Items>
           </Col>
           <Col>
             <Items>
               {loginAndProfile ? (
-                <Itme>
+                <Item>
                   <Link to={"/profile"}>프로필</Link>
-                </Itme>
+                </Item>
               ) : (
                 <>
-                  <Itme>
+                  <Item>
                     <Link to={"/login"}>로그인</Link>
-                  </Itme>
-                  <Itme>
+                  </Item>
+                  <Item>
                     <Link to={"/join"}>회원가입</Link>
-                  </Itme>
+                  </Item>
                 </>
               )}
             </Items>
@@ -177,35 +212,48 @@ function Header() {
            </li> */}
         </WebNav>
       ) : (
-        <Mobile>
-          <Link to={"/"}>
-            <MobileItem>
-              <AiOutlineHome />
-              <MobileSpan>홈</MobileSpan>
-            </MobileItem>
-          </Link>
+        <>
+          <Hr />
+          <Mobile>
+            <Link to={"/"}>
+              <MobileItemHome
+                homeMatch={homeMatch?.pathname === "/" ? true : false}
+              >
+                <AiOutlineHome />
+                <MobileSpan>홈</MobileSpan>
+              </MobileItemHome>
+            </Link>
 
-          <Link to={"/resume"}>
-            <MobileItem>
-              <HiOutlineDocumentText />
-              <MobileSpan>내이력서</MobileSpan>
-            </MobileItem>
-          </Link>
+            <Link to={"/resume"}>
+              <MobileItemResume
+                resumeMatch={resumeMatch?.pathname === "/resume" ? true : false}
+              >
+                <HiOutlineDocumentText />
+                <MobileSpan>내이력서</MobileSpan>
+              </MobileItemResume>
+            </Link>
 
-          <Link to={"/"}>
-            <MobileItem>
-              <BsBuilding />
-              <MobileSpan>채용공고</MobileSpan>
-            </MobileItem>
-          </Link>
+            <Link to={"/"}>
+              <MobileItemHome
+                homeMatch={homeMatch?.pathname === "/" ? true : false}
+              >
+                <BsBuilding />
+                <MobileSpan>채용공고</MobileSpan>
+              </MobileItemHome>
+            </Link>
 
-          <Link to={"/profile"}>
-            <MobileItem>
-              <BiUser />
-              <MobileSpan>프로필</MobileSpan>
-            </MobileItem>
-          </Link>
-        </Mobile>
+            <Link to={"/profile"}>
+              <MobileItemProfile
+                profileMatch={
+                  profileMatch?.pathname === "/profile" ? true : false
+                }
+              >
+                <BiUser />
+                <MobileSpan>프로필</MobileSpan>
+              </MobileItemProfile>
+            </Link>
+          </Mobile>
+        </>
       )}
     </>
   );
