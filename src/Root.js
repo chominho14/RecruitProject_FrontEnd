@@ -1,12 +1,15 @@
 import { Outlet } from "react-router-dom";
+import { RecoilRoot } from "recoil";
 import Header from "./Components/Header";
 
 function App() {
   return (
-    <div>
-      <Header />
-      <Outlet />
-    </div>
+    <RecoilRoot>
+      <div>
+        <Header />
+        <Outlet />
+      </div>
+    </RecoilRoot>
   );
 }
 
