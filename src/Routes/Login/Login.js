@@ -47,7 +47,7 @@ const LoginInput = styled.input`
   margin-bottom: 8px;
   -webkit-appearance: none;
   max-width: 400px;
-  width: 50%;
+  width: 60%;
   font-size: large;
   padding: 10px;
   border-width: 2px;
@@ -77,7 +77,7 @@ const LoginBtn = styled.button`
   font-size: 14px;
   line-height: 20px;
   font-weight: 500;
-  width: 50%;
+  width: 60%;
   max-width: 400px;
   padding: 12px;
   cursor: pointer;
@@ -92,12 +92,50 @@ const LoginBtn = styled.button`
   }
 `;
 
+const AnotherPageContainer = styled.div`
+  margin-top: 32px;
+`;
+
+const AnotherPageSubContainer = styled.div`
+  margin-top: 32px;
+`;
+
+const AnotherPageHr = styled.hr`
+  width: 60%;
+  max-width: 400px;
+`;
+
+const AnotherPageOr = styled.div`
+  top: -17px;
+  text-align: center;
+`;
+
+const AnoyherPageOrSpan = styled.span`
+  background-color: white;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  color: gray;
+`;
+
+const AnotherPageGoDiv = styled.div`
+  text-align: center;
+  margin-top: 20px;
+`;
+
+const AnotherPageGoSpan = styled.span`
+  background-color: white;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: gray;
+`;
+
 function Login() {
   const { register, handleSubmit } = useForm();
-  const [login, { loading, data }] = useMutations(
-    "http://localhost:8080/api/login"
-  );
-  console.log(process.env.API_URL);
+  const [login, { loading, data }] = useMutations("/login");
   const onValid = (data) => {
     if (loading) return;
     login({ ...data });
@@ -114,61 +152,31 @@ function Login() {
       </LoginSub>
       <LoginMainForm onSubmit={handleSubmit(onValid)}>
         <LoginInput
-          register={register("email")}
+          {...register("email")}
           required
           name="email"
           type="email"
           placeholder="이메일"
         />
         <LoginInput
-          register={register("password")}
+          {...register("password")}
           required
           name="password"
           type="password"
           placeholder="비밀번호"
         />
-        <LoginBtn>로그인</LoginBtn>
+        <LoginBtn>{loading ? "로딩 중..." : "로그인"}</LoginBtn>
       </LoginMainForm>
-      <div style={{ marginTop: "32px" }}>
-        <div style={{ position: "relative" }}>
-          <hr style={{ width: "50%", maxWidth: "400px" }} />
+      <AnotherPageContainer>
+        <AnotherPageSubContainer>
+          <AnotherPageHr />
 
-          <div
-            style={{ position: "relative", top: "-12px", textAlign: "center" }}
-          >
-            <span
-              style={{
-                backgroundColor: "white",
-                paddingLeft: "8px",
-                paddingRight: "8px",
-                fontSize: "14px",
-                lineHeight: "20px",
-                color: "gray",
-              }}
-            >
-              또는
-            </span>
-          </div>
-        </div>
-        <div
-          style={{
-            position: "relative",
-            bottom: "-1.25rem",
-            textAlign: "center",
-          }}
-        >
-          <span
-            style={{
-              backgroundColor: "white",
-              paddingLeft: "0.25rem",
-              paddingRight: "0.25rem",
-              fontSize: "0.875rem",
-              lineHeight: "1.25rem",
-              color: "gray",
-            }}
-          >
-            계정이 없으신가요?
-          </span>
+          <AnotherPageOr>
+            <AnoyherPageOrSpan>또는</AnoyherPageOrSpan>
+          </AnotherPageOr>
+        </AnotherPageSubContainer>
+        <AnotherPageGoDiv>
+          <AnotherPageGoSpan>계정이 없으신가요?</AnotherPageGoSpan>
           <Link
             to={"/join"}
             style={{
@@ -183,8 +191,8 @@ function Login() {
           >
             회원가입
           </Link>
-        </div>
-      </div>
+        </AnotherPageGoDiv>
+      </AnotherPageContainer>
     </LoginContainer>
   );
 }
