@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useMutations from "../../Libs/useMutation";
 
@@ -133,14 +134,35 @@ const AnotherPageGoSpan = styled.span`
   color: gray;
 `;
 
+const ErrorMessageSpan = styled.span`
+  color: red;
+  font-size: large;
+  font-weight: 400;
+  border-width: 1px;
+  border-color: red;
+`;
+
 function Login() {
   const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
   const [login, { loading, data }] = useMutations("/login");
+
   const onValid = (data) => {
     if (loading) return;
     login({ ...data });
     console.log(data);
   };
+
+  console.log(data);
+  useEffect(() => {
+    if (data?.code === "ok") {
+      localStorage.setItem("userData", data.email);
+      navigate("/");
+    } else {
+      navigate("/login");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   return (
     <LoginContainer>
@@ -151,6 +173,7 @@ function Login() {
         </LoginSubTitleContainer>
       </LoginSub>
       <LoginMainForm onSubmit={handleSubmit(onValid)}>
+        <ErrorMessageSpan>{data?.message}</ErrorMessageSpan>
         <LoginInput
           {...register("email")}
           required
