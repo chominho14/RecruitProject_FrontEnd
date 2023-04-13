@@ -157,6 +157,7 @@ function Login() {
   useEffect(() => {
     if (data?.code === "ok") {
       localStorage.setItem("userData", data.email);
+      localStorage.setItem("userRoles", data.authority);
       navigate("/");
     } else {
       navigate("/login");
