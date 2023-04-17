@@ -9,6 +9,7 @@ import { AiOutlineHome } from "react-icons/ai";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { BiUser } from "react-icons/bi";
 import { BsBuilding } from "react-icons/bs";
+import useUser from "../Libs/useUser";
 
 // -----------------------웹 헤더 ------------------------
 
@@ -22,6 +23,7 @@ const WebNav = styled.nav`
   font-size: 14px;
   padding: 20px 60px;
   background-color: #d9e1e8;
+  opacity: 0.7;
 `;
 
 const Logo = styled.div`
@@ -136,15 +138,18 @@ const MobileSpan = styled.span`
 `;
 
 function Header() {
-  const loginAndProfile = false;
   const resumeMatch = useMatch("/resume");
   const homeMatch = useMatch("/");
   const profileMatch = useMatch("/profile");
-  console.log(resumeMatch, homeMatch, profileMatch);
+  const loginMatch = useMatch("/login");
+  const joinMatch = useMatch("/join");
+
+  const userData = useUser();
 
   // 반응형 헤더 만들기
   const [screen, setScreen] = useState(window.outerWidth);
   const [large, setLarge] = useRecoilState(resizeState);
+
   useEffect(() => {
     const handleResize = () => {
       setScreen(window.outerWidth);
@@ -159,58 +164,71 @@ function Header() {
       window.removeEventListener("resize", handleResize);
     };
   });
-  console.log(large);
+
   // const navigate = useNavigate();
 
   // const onProfileClick = () => {
-  //   navigate("/profile");
+  //   if (user?.email == null) navigate("/login");
   // };
 
   return (
     <>
       {large === "Web" ? (
-        <WebNav>
-          <Col>
-            <Logo />
-            <Items>
-              <Item>
-                <Link to={"/resume"}>
-                  내 이력서{" "}
-                  {resumeMatch?.pathname === "/resume" && (
-                    <Circle layoutId="circle" />
-                  )}
-                </Link>
-              </Item>
-              <Item>
-                <Link to={"/"}>
-                  채용 공고 {homeMatch && <Circle layoutId="circle" />}
-                </Link>
-              </Item>
-            </Items>
-          </Col>
-          <Col>
-            <Items>
-              {loginAndProfile ? (
+        <>
+          <WebNav>
+            <Col>
+              <Logo />
+              <Items>
                 <Item>
-                  <Link to={"/profile"}>프로필</Link>
+                  <Link to={"/resume"}>
+                    내 이력서
+                    {resumeMatch?.pathname === "/resume" && (
+                      <Circle layoutId="circle" />
+                    )}
+                  </Link>
                 </Item>
-              ) : (
-                <>
+                <Item>
+                  <Link to={"/"}>
+                    채용 공고 {homeMatch && <Circle layoutId="circle" />}
+                  </Link>
+                </Item>
+              </Items>
+            </Col>
+            <Col>
+              <Items>
+                {userData?.email != null ? (
                   <Item>
-                    <Link to={"/login"}>로그인</Link>
+                    <Link to={"/profile"}>
+                      프로필
+                      {profileMatch?.pathname === "/profile" && (
+                        <Circle layoutId="circle" />
+                      )}
+                    </Link>
                   </Item>
-                  <Item>
-                    <Link to={"/join"}>회원가입</Link>
-                  </Item>
-                </>
-              )}
-            </Items>
-          </Col>
-
-          {/* <li>
-             <button onClick={onProfileClick}>Profile</button>
-           </li> */}
-        </WebNav>
+                ) : (
+                  <>
+                    <Item>
+                      <Link to={"/login"}>
+                        로그인
+                        {loginMatch?.pathname === "/login" && (
+                          <Circle layoutId="circle" />
+                        )}
+                      </Link>
+                    </Item>
+                    <Item>
+                      <Link to={"/join"}>
+                        회원가입
+                        {joinMatch?.pathname === "/join" && (
+                          <Circle layoutId="circle" />
+                        )}
+                      </Link>
+                    </Item>
+                  </>
+                )}
+              </Items>
+            </Col>
+          </WebNav>
+        </>
       ) : (
         <>
           <Hr />
@@ -242,6 +260,7 @@ function Header() {
               </MobileItemHome>
             </Link>
 
+            {/* <Link to={"/profile"} onClick={onProfileClick}> */}
             <Link to={"/profile"}>
               <MobileItemProfile
                 profileMatch={
