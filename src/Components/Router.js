@@ -1,5 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import Root from "../Root";
+import Application from "../Routes/Company/Application";
+import CompanyJoin from "../Routes/Company/CompanyJoin";
+import Upload from "../Routes/Company/Upload";
 import Home from "../Routes/Home/Home";
 import Join from "../Routes/Join/Join";
 import Login from "../Routes/Login/Login";
@@ -50,6 +53,18 @@ const router = createBrowserRouter([
             element: <Setting />,
           },
         ],
+      },
+      {
+        path: "company/application",
+        element: <Application />,
+      },
+      {
+        path: "company/upload",
+        element: <Upload />,
+      },
+      {
+        path: "company/companyjoin",
+        element: <CompanyJoin />,
       },
     ],
     errorElement: <NotFound />,
