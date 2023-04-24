@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -161,8 +162,21 @@ const UploadMobileSizeBackBtnContainer = styled.div`
   height: 30px;
 `;
 
+// ------------------ Image File --------------------
+const UploadImageContainer = styled.div`
+  width: 100%;
+  display: flex;
+  height: 180px;
+`;
+
+const UploadImageContainerImg = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+`;
+
 function Upload() {
-  const RegionSelected = ["서울", "인천", "경기도"];
+  const RegionSelected = ["SEOUL", "INCHEON", "GYEONGGI"];
   const [regionSelected, setRegionSelected] = useState("");
 
   const SkillSelected = [
@@ -195,22 +209,69 @@ function Upload() {
   };
 
   // form 백엔드 데이터 전송
-  const { register, handleSubmit } = useForm();
-  const [join, { loading, data }] = useMutations("/company/companyjoin");
+  const { register, handleSubmit, watch } = useForm();
+  //   const [uploadPosition, { loading, data }] = useMutations("/company/upload");
   const navigate = useNavigate();
-  const onValid = (data) => {
-    if (loading) return;
-    join({ ...data });
+  const [data, setData] = useState(null);
+
+  // 데이터들 업로드
+  const onValid = ({
+    title,
+    salary,
+    endDay,
+    introduction,
+    region,
+    skill,
+    field,
+    photo,
+  }) => {
+    if (photo && photo.length > 0) {
+      console.log(photo[0]);
+
+      const formData = new FormData();
+
+      formData.append("file", photo[0]);
+
+      const positionDto = {
+        title,
+        salary,
+        endDay,
+        introduction,
+        region,
+        skill,
+        field,
+      };
+
+      formData.append("stringPositionDto", JSON.stringify(positionDto));
+      console.log(formData);
+      axios
+        .post("http://localhost:8080/api/company/upload", formData, {
+          headers: { Authorization: localStorage.getItem("userData") },
+        })
+        .then((res) => {
+          setData(res.data);
+        });
+    }
   };
   console.log(data);
+
   useEffect(() => {
     if (data?.code === "ok") {
       navigate("/");
     } else {
       navigate("/company/upload");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
+
+  // 사진 첨부 시 사진 보이기
+  const photo = watch("photo");
+  const [photoPreview, setPhotoPreview] = useState("");
+  useEffect(() => {
+    if (photo && photo.length > 0) {
+      const file = photo[0];
+      setPhotoPreview(URL.createObjectURL(file));
+    }
+  }, [photo]);
 
   return (
     <UploadContainer>
@@ -227,28 +288,42 @@ function Upload() {
       <div>
         <UploadMainForm onSubmit={handleSubmit(onValid)}>
           <UploadFormImgDiv>
-            <UploadFormImgLabel>
-              <TbPhotoPlus />
-              <UploadInput
-                {...register("email")}
-                type="file"
-                multiple
-                accept="image/*"
-                style={{ display: "none" }}
-              />
-            </UploadFormImgLabel>
+            {photoPreview.length === 0 ? (
+              <UploadFormImgLabel>
+                <TbPhotoPlus />
+                <UploadInput
+                  {...register("photo")}
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  style={{ display: "none" }}
+                />
+              </UploadFormImgLabel>
+            ) : (
+              <UploadImageContainer>
+                <UploadImageContainerImg src={photoPreview} />
+              </UploadImageContainer>
+            )}
           </UploadFormImgDiv>
           <UploadFormDiv>
             <UploadFormLabel>채용공고 제목</UploadFormLabel>
             <div>
-              <UploadInput type="text" placeholder="제목을 입려해주세요." />
+              <UploadInput
+                {...register("title", { required: true })}
+                type="text"
+                placeholder="제목을 입려해주세요."
+              />
             </div>
           </UploadFormDiv>
 
           <UploadFormDiv>
             <UploadFormLabel>연봉</UploadFormLabel>
             <div>
-              <UploadInput type="text" placeholder="연봉을 입력해주세요." />
+              <UploadInput
+                {...register("salary")}
+                type="number"
+                placeholder="연봉을 입력해주세요."
+              />
             </div>
           </UploadFormDiv>
 
@@ -256,6 +331,7 @@ function Upload() {
             <UploadFormLabel>채용공고 마감일</UploadFormLabel>
             <div>
               <UploadInput
+                {...register("endDay")}
                 type="text"
                 placeholder="채용공고 마감일을 입력해주세요."
               />
@@ -266,6 +342,7 @@ function Upload() {
             <UploadFormLabel>채용공고 소개</UploadFormLabel>
             <div>
               <UploadFormTextarea
+                {...register("introduction")}
                 rows={10}
                 type="text"
                 placeholder="채용공고 소개를 입력해주세요."
@@ -279,6 +356,7 @@ function Upload() {
               <UploadFormSelect
                 onChange={handleRegionSelect}
                 value={regionSelected}
+                {...register("region", { required: true })}
               >
                 {RegionSelected.map((item) => (
                   <option value={item} key={item}>
@@ -295,6 +373,7 @@ function Upload() {
               <UploadFormSelect
                 onChange={handleSkillSelect}
                 value={skillSelected}
+                {...register("skill", { required: true })}
               >
                 {SkillSelected.map((item) => (
                   <option value={item} key={item}>
@@ -311,6 +390,7 @@ function Upload() {
               <UploadFormSelect
                 onChange={handleFieldSelect}
                 value={fieldSelected}
+                {...register("field", { required: true })}
               >
                 {FieldSelected.map((item) => (
                   <option value={item} key={item}>
