@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { resizeState } from "../../atom";
-import useMutations from "../../Libs/useMutation";
+import { BiSearchAlt2 } from "react-icons/bi";
 
 const UploadContainer = styled.div`
   width: 100%;
@@ -19,7 +19,6 @@ const UploadMainForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 80px;
 `;
 
 const UploadFormImgDiv = styled.div`
@@ -175,22 +174,102 @@ const UploadImageContainerImg = styled.img`
   border-radius: 6px;
 `;
 
+const UploadFormImageLabel = styled.label`
+  font-size: small;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  margin-bottom: 10px;
+`;
+
+// ------------------- 기술 스택 ------------------------
+
+const SkillListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 80px;
+`;
+
+const SkillListListBtnContainer = styled.div`
+  height: 100px;
+`;
+
+const SkillListListBtnUl = styled.ul``;
+
+const SkillSearchLi = styled.li`
+  float: left;
+  margin: 4px;
+`;
+
+const SkillListListBtn = styled.button`
+  border-radius: 8px;
+  color: black;
+  border-color: ${({ check }) => (check ? "#76b4e0" : "#d9e1e8")};
+  &:hover {
+    letter-spacing: 1px;
+    opacity: 0.8;
+    cursor: pointer;
+    border-color: ${({ check }) => (check ? "black" : "gray")};
+    background-color: ${({ check }) => (check ? "#a8cfeb" : "white")};
+  }
+
+  background-color: ${({ check }) => (check ? "#a8cfeb" : "white")};
+`;
+
+const SkillSearchDiv = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+`;
+
+const SkillSearchInput = styled.input`
+  margin-top: 8px;
+  margin-bottom: 8px;
+  -webkit-appearance: none;
+  width: 100%;
+  font-size: large;
+  padding: 10px;
+  border-width: 2px;
+  border-color: rgba(139, 134, 135, 0.3);
+  border-radius: 0.375rem;
+  &::placeholder {
+    font-size: medium;
+    color: rgba(139, 134, 135, 0.5);
+  }
+  &:hover {
+    border-color: rgba(43, 144, 217, 0.5);
+  }
+  &:active,
+  &:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    border-width: 2px;
+    border-color: rgba(43, 144, 217, 0.5);
+  }
+`;
+
+const SkillSearchIcon = styled.span`
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  font-size: x-large;
+  opacity: 0.5;
+`;
+
 function Upload() {
   const RegionSelected = ["SEOUL", "INCHEON", "GYEONGGI"];
+
   const [regionSelected, setRegionSelected] = useState("");
 
-  const SkillSelected = [
-    "JAVA & Spring",
-    "Python",
-    "ReactJS & VueJS",
-    "C++",
-    "C#",
-    "JavaScript",
-    "SpringBoot & JPA",
+  const FieldSelected = [
+    "백엔드",
+    "프론트엔드",
+    "인공지능",
+    "웹프로그래머",
+    "리눅스",
+    "데이터분석",
+    "정보보안",
   ];
-  const [skillSelected, setSkillSelected] = useState("");
-
-  const FieldSelected = ["백엔드", "프론트엔드", "인공지능"];
   const [fieldSelected, setFieldSelected] = useState("");
 
   const large = useRecoilValue(resizeState);
@@ -198,10 +277,6 @@ function Upload() {
   const handleRegionSelect = (e) => {
     setRegionSelected(e.target.value);
     console.log(e.target.value);
-  };
-
-  const handleSkillSelect = (e) => {
-    setSkillSelected(e.target.value);
   };
 
   const handleFieldSelect = (e) => {
@@ -225,9 +300,20 @@ function Upload() {
     field,
     photo,
   }) => {
-    if (photo && photo.length > 0) {
-      console.log(photo[0]);
+    // 기술 스택 체크 되어 있는 값들 찾아서 skill데이터에 담기
+    let skillHidden = "";
+    for (let i = 0; i < skillLists.length; i++) {
+      if (skillLists[i].check === true) {
+        if (skillHidden === "") {
+          skillHidden = skillHidden + skillLists[i].text;
+        } else {
+          skillHidden = skillHidden + ", " + skillLists[i].text;
+        }
+      }
+      skill = skillHidden;
+    }
 
+    if (photo && photo.length > 0) {
       const formData = new FormData();
 
       formData.append("file", photo[0]);
@@ -241,9 +327,8 @@ function Upload() {
         skill,
         field,
       };
-
       formData.append("stringPositionDto", JSON.stringify(positionDto));
-      console.log(formData);
+
       axios
         .post("http://localhost:8080/api/company/upload", formData, {
           headers: { Authorization: localStorage.getItem("userData") },
@@ -253,7 +338,6 @@ function Upload() {
         });
     }
   };
-  console.log(data);
 
   useEffect(() => {
     if (data?.code === "ok") {
@@ -273,6 +357,32 @@ function Upload() {
     }
   }, [photo]);
 
+  // 기술 스택 검색해서 선택할 수  있게 만들기
+  const skilled = watch("searchSkill");
+
+  const [skillLists, setSkillLists] = useState([
+    { id: 1, text: "Java", check: false },
+    { id: 2, text: "Python", check: false },
+    { id: 3, text: "ReactJS", check: false },
+    { id: 4, text: "VueJS", check: false },
+    { id: 5, text: "C++", check: false },
+    { id: 6, text: "C#", check: false },
+    { id: 7, text: "JPA", check: false },
+    { id: 8, text: "SpringBoot", check: false },
+    { id: 9, text: "JavaScript", check: false },
+    { id: 10, text: "etc", check: false },
+  ]);
+
+  const handleSkillListBtnClick = (id) => {
+    setSkillLists(
+      skillLists.map((skillList) =>
+        skillList.id === id
+          ? { ...skillList, check: !skillList.check }
+          : skillList
+      )
+    );
+  };
+
   return (
     <UploadContainer>
       <UploadMobileSizeBackBtnContainer>
@@ -286,7 +396,65 @@ function Upload() {
         ) : null}
       </UploadMobileSizeBackBtnContainer>
       <div>
+        <SkillListContainer>
+          <UploadFormDiv>
+            <UploadFormLabel>
+              기술 스택 <span style={{ color: "#ff7f00" }}>*</span>
+            </UploadFormLabel>
+          </UploadFormDiv>
+          <UploadFormDiv>
+            <div>
+              <SkillSearchDiv>
+                <SkillSearchInput
+                  {...register("searchSkill")}
+                  type="text"
+                  placeholder="기술 스택 검색."
+                />
+
+                <SkillSearchIcon>
+                  <BiSearchAlt2 />
+                </SkillSearchIcon>
+              </SkillSearchDiv>
+
+              <SkillListListBtnContainer>
+                <SkillListListBtnUl>
+                  {skillLists
+                    .filter((skillList) => {
+                      if (skilled === "" || skilled === undefined) {
+                        return skillList;
+                      } else if (
+                        skillList.text
+                          .toLowerCase()
+                          .includes(skilled.toLowerCase())
+                      ) {
+                        return skillList;
+                      }
+                      return null;
+                    })
+                    .map((skillList) => (
+                      <SkillSearchLi key={skillList.id}>
+                        <SkillListListBtn
+                          onClick={() => {
+                            handleSkillListBtnClick(skillList.id);
+                          }}
+                          check={skillList.check}
+                        >
+                          {skillList.text}
+                        </SkillListListBtn>
+                      </SkillSearchLi>
+                    ))}
+                </SkillListListBtnUl>
+              </SkillListListBtnContainer>
+            </div>
+          </UploadFormDiv>
+        </SkillListContainer>
         <UploadMainForm onSubmit={handleSubmit(onValid)}>
+          <UploadFormDiv>
+            <UploadFormImageLabel>
+              사진 첨부 <span style={{ color: "#ff7f00" }}>*</span>
+            </UploadFormImageLabel>
+          </UploadFormDiv>
+
           <UploadFormImgDiv>
             {photoPreview.length === 0 ? (
               <UploadFormImgLabel>
@@ -306,7 +474,9 @@ function Upload() {
             )}
           </UploadFormImgDiv>
           <UploadFormDiv>
-            <UploadFormLabel>채용공고 제목</UploadFormLabel>
+            <UploadFormLabel>
+              채용공고 제목 <span style={{ color: "#ff7f00" }}>*</span>
+            </UploadFormLabel>
             <div>
               <UploadInput
                 {...register("title", { required: true })}
@@ -321,7 +491,7 @@ function Upload() {
             <div>
               <UploadInput
                 {...register("salary")}
-                type="number"
+                type="text"
                 placeholder="연봉을 입력해주세요."
               />
             </div>
@@ -351,12 +521,14 @@ function Upload() {
           </UploadFormDiv>
 
           <UploadFormDiv>
-            <UploadFormLabel>지역</UploadFormLabel>
+            <UploadFormLabel>
+              지역 <span style={{ color: "#ff7f00" }}>*</span>
+            </UploadFormLabel>
             <div>
               <UploadFormSelect
+                {...register("region", { required: true })}
                 onChange={handleRegionSelect}
                 value={regionSelected}
-                {...register("region", { required: true })}
               >
                 {RegionSelected.map((item) => (
                   <option value={item} key={item}>
@@ -368,29 +540,14 @@ function Upload() {
           </UploadFormDiv>
 
           <UploadFormDiv>
-            <UploadFormLabel>기술 스택</UploadFormLabel>
+            <UploadFormLabel>
+              채용공고 분야 <span style={{ color: "#ff7f00" }}>*</span>
+            </UploadFormLabel>
             <div>
               <UploadFormSelect
-                onChange={handleSkillSelect}
-                value={skillSelected}
-                {...register("skill", { required: true })}
-              >
-                {SkillSelected.map((item) => (
-                  <option value={item} key={item}>
-                    {item}
-                  </option>
-                ))}
-              </UploadFormSelect>
-            </div>
-          </UploadFormDiv>
-
-          <UploadFormDiv>
-            <UploadFormLabel>채용공고 분야</UploadFormLabel>
-            <div>
-              <UploadFormSelect
+                {...register("field", { required: true })}
                 onChange={handleFieldSelect}
                 value={fieldSelected}
-                {...register("field", { required: true })}
               >
                 {FieldSelected.map((item) => (
                   <option value={item} key={item}>
@@ -401,7 +558,7 @@ function Upload() {
             </div>
           </UploadFormDiv>
           <UploadFormDiv>
-            <UploadBtn>{false ? "로딩 중..." : "업로드"}</UploadBtn>
+            <UploadBtn>{"업로드"}</UploadBtn>
           </UploadFormDiv>
         </UploadMainForm>
       </div>
