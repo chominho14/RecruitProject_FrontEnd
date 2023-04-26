@@ -176,14 +176,14 @@ function Login() {
       <LoginMainForm onSubmit={handleSubmit(onValid)}>
         <ErrorMessageSpan>{data?.message}</ErrorMessageSpan>
         <LoginInput
-          {...register("email")}
+          {...register("email", { required: true })}
           required
           name="email"
           type="email"
           placeholder="이메일"
         />
         <LoginInput
-          {...register("password")}
+          {...register("password", { required: true })}
           required
           name="password"
           type="password"

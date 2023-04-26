@@ -158,6 +158,7 @@ function Join() {
     } else {
       navigate("/join");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   return (
@@ -171,35 +172,35 @@ function Join() {
       <JoinMainForm onSubmit={handleSubmit(onValid)}>
         <ErrorMessageSpan>{data?.message}</ErrorMessageSpan>
         <JoinInput
-          {...register("email")}
+          {...register("email", { required: true })}
           required
           name="email"
           type="email"
           placeholder="이메일"
         />
         <JoinInput
-          {...register("username")}
+          {...register("username", { required: true })}
           required
           name="username"
           type="text"
           placeholder="이름"
         />
         <JoinInput
-          {...register("studentId")}
+          {...register("studentId", { required: true })}
           required
           name="studentId"
           type="text"
           placeholder="학번"
         />
         <JoinInput
-          {...register("password")}
+          {...register("password", { required: true })}
           required
           name="password"
           type="password"
           placeholder="비밀번호"
         />
         <JoinInput
-          {...register("password2")}
+          {...register("password2", { required: true })}
           required
           name="password2"
           type="password"
