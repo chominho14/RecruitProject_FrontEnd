@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import PositionItem from "../../Components/Position-item";
+import useGet from "../../Libs/useGet";
 import useUser from "../../Libs/useUser";
 
 const HomeContainer = styled.div`
@@ -7,6 +8,7 @@ const HomeContainer = styled.div`
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
+  padding-bottom: 80px;
 `;
 
 const MainCompanyInfoContainer = styled.div`
@@ -24,21 +26,24 @@ const CompanyInfoGrid = styled.div`
 function Home() {
   const user = useUser();
 
+  const positions = useGet();
+
   console.log(user);
+  console.log(positions);
+
   return (
     <HomeContainer>
-      home
       <MainCompanyInfoContainer>
         <CompanyInfoGrid>
-          {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
+          {positions?.data.map((position) => (
             <PositionItem
-              id={i}
-              key={i}
-              positionImage={"이미지"}
-              companyName={"회사 이름"}
-              positionTitle={"채용 제목"}
-              positionSkilled={"기술 스택"}
-              positionRegion={"장소"}
+              id={position.id}
+              key={position.id}
+              positionImage={position.positionImage}
+              companyName={position.company.companyName}
+              positionTitle={position.positionTitle}
+              positionSkilled={position.skilled}
+              positionRegion={position.region}
             />
           ))}
         </CompanyInfoGrid>
