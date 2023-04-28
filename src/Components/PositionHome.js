@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const CompanyInfoDetailImgNO = styled.div`
   width: 100%;
-  height: 150px;
+  height: 250px;
   background-color: #d9e1e8;
   border-radius: 10px;
   transition: opacity 0.1s linear;
@@ -11,7 +11,7 @@ const CompanyInfoDetailImgNO = styled.div`
 
 const CompanyInfoDetailImgOK = styled.img`
   width: 100%;
-  height: 150px;
+  height: 250px;
   border-radius: 10px;
   transition: opacity 0.1s linear;
 `;
@@ -30,32 +30,35 @@ const CompanyInfoDetail = styled.div`
 `;
 
 const CompanyInfoDetailContainer = styled.div`
-  margin: 5px;
+  margin: 12px;
 `;
 
 const CompanyInfoDetailName = styled.div`
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 400;
 `;
 
 const CompanyInfoDetailPositionTitle = styled.div`
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 500;
+  padding-top: 2px;
 `;
 
 const CompanyInfoDetailPositionSkilled = styled.div`
-  font-size: 12px;
+  font-size: 14px;
   color: rgba(0, 0, 0, 0.3);
   font-weight: 400;
+  padding-top: 2px;
 `;
 
 const CompanyInfoDetailPositionRegion = styled.div`
-  font-size: 12px;
+  font-size: 14px;
   color: rgba(0, 0, 0, 0.3);
   font-weight: 400;
+  padding-top: 2px;
 `;
 
-function PositionItem({
+function PositionHomeMobile({
   id,
   positionImage,
   companyName,
@@ -89,4 +92,4 @@ function PositionItem({
   );
 }
 
-export default PositionItem;
+export default PositionHomeMobile;

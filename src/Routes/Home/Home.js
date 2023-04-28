@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { resizeState } from "../../atom";
 import Loading from "../../Components/Loading";
 import PositionItem from "../../Components/Position-item";
+import PositionHomeMobile from "../../Components/PositionHome";
 import { fetchHomePositions } from "../../Libs/api";
-import useGet from "../../Libs/useGet";
-import useUser from "../../Libs/useUser";
 
 const HomeContainer = styled.div`
   width: 85%;
@@ -26,7 +27,17 @@ const CompanyInfoGrid = styled.div`
   grid-gap: 25px;
 `;
 
+// 모바일 화면
+const CompanyInfoMobile = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px;
+  padding-bottom: 40px;
+`;
+
 function Home() {
+  const large = useRecoilValue(resizeState);
+
   const { data: allPositionData, isLoading } = useQuery(
     ["allPosition"],
     fetchHomePositions
@@ -38,19 +49,37 @@ function Home() {
         {isLoading ? (
           <Loading />
         ) : (
-          <CompanyInfoGrid>
-            {allPositionData?.data.map((position) => (
-              <PositionItem
-                id={position.id}
-                key={position.id}
-                positionImage={position.positionImage}
-                companyName={position.company.companyName}
-                positionTitle={position.positionTitle}
-                positionSkilled={position.skilled}
-                positionRegion={position.region}
-              />
-            ))}
-          </CompanyInfoGrid>
+          <>
+            {large === "Web" ? (
+              <CompanyInfoGrid>
+                {allPositionData?.data.map((position) => (
+                  <PositionItem
+                    id={position.id}
+                    key={position.id}
+                    positionImage={position.positionImage}
+                    companyName={position.company.companyName}
+                    positionTitle={position.positionTitle}
+                    positionSkilled={position.skilled}
+                    positionRegion={position.region}
+                  />
+                ))}
+              </CompanyInfoGrid>
+            ) : (
+              <CompanyInfoMobile>
+                {allPositionData?.data.map((position) => (
+                  <PositionHomeMobile
+                    id={position.id}
+                    key={position.id}
+                    positionImage={position.positionImage}
+                    companyName={position.company.companyName}
+                    positionTitle={position.positionTitle}
+                    positionSkilled={position.skilled}
+                    positionRegion={position.region}
+                  />
+                ))}
+              </CompanyInfoMobile>
+            )}
+          </>
         )}
       </MainCompanyInfoContainer>
     </HomeContainer>
