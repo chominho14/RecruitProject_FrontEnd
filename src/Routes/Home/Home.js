@@ -1,5 +1,8 @@
+import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
+import Loading from "../../Components/Loading";
 import PositionItem from "../../Components/Position-item";
+import { fetchHomePositions } from "../../Libs/api";
 import useGet from "../../Libs/useGet";
 import useUser from "../../Libs/useUser";
 
@@ -24,29 +27,31 @@ const CompanyInfoGrid = styled.div`
 `;
 
 function Home() {
-  const user = useUser();
-
-  const positions = useGet();
-
-  console.log(user);
-  console.log(positions);
+  const { data: allPositionData, isLoading } = useQuery(
+    ["allPosition"],
+    fetchHomePositions
+  );
 
   return (
     <HomeContainer>
       <MainCompanyInfoContainer>
-        <CompanyInfoGrid>
-          {positions?.data.map((position) => (
-            <PositionItem
-              id={position.id}
-              key={position.id}
-              positionImage={position.positionImage}
-              companyName={position.company.companyName}
-              positionTitle={position.positionTitle}
-              positionSkilled={position.skilled}
-              positionRegion={position.region}
-            />
-          ))}
-        </CompanyInfoGrid>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <CompanyInfoGrid>
+            {allPositionData?.data.map((position) => (
+              <PositionItem
+                id={position.id}
+                key={position.id}
+                positionImage={position.positionImage}
+                companyName={position.company.companyName}
+                positionTitle={position.positionTitle}
+                positionSkilled={position.skilled}
+                positionRegion={position.region}
+              />
+            ))}
+          </CompanyInfoGrid>
+        )}
       </MainCompanyInfoContainer>
     </HomeContainer>
   );
