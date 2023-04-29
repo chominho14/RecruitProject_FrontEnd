@@ -3,6 +3,11 @@ import { useRecoilValue } from "recoil";
 import { resizeState } from "../../atom";
 import { IoIosArrowBack } from "react-icons/io";
 import { BsBookmarkCheck } from "react-icons/bs";
+import { useQuery } from "@tanstack/react-query";
+import { fetchPositionDetail } from "../../Libs/api";
+import { useNavigate, useParams } from "react-router-dom";
+import Loading from "../../Components/Loading";
+import useUser from "../../Libs/useUser";
 
 const PositionContainer = styled.div`
   width: 85%;
@@ -12,6 +17,36 @@ const PositionContainer = styled.div`
   padding-bottom: 80px;
   display: flex;
   flex-direction: column;
+`;
+
+const BackDiv = styled.div`
+  position: absolute;
+  top: 40px;
+  left: 35px;
+  width: 100%;
+`;
+
+const BackHr = styled.hr`
+  margin-left: 0px;
+  margin-right: 15%;
+  border: 1px solid #ddd;
+`;
+
+const BackBtn = styled.button`
+  color: black;
+  border: none;
+  font-size: 18px;
+  line-height: 20px;
+  font-weight: 500;
+  width: 30px;
+  height: 20px;
+  cursor: pointer;
+  background-color: white;
+  border-color: #d9e1e8;
+  border-radius: 8px;
+  &:hover {
+    background-color: whitesmoke;
+  }
 `;
 
 const PositionCompanyWithPositionContainer = styled.div`
@@ -48,9 +83,15 @@ const PositionWebMiddleImgContainer = styled.div`
   width: 100%;
 `;
 
-const PositionWebMiddleLeftImg = styled.div`
+const PositionWebMiddleLeftImgNull = styled.div`
   width: 95%;
-  padding-top: 56.25%;
+  padding-top: 70%;
+  background-color: #d9e1e8;
+  border-radius: 10px;
+`;
+
+const PositionWebMiddleLeftImg = styled.img`
+  width: 95%;
   background-color: whitesmoke;
   border-radius: 10px;
 `;
@@ -71,8 +112,8 @@ const PositionWebMiddleLeftDescription = styled.div`
 
 const PositionWebMiddleLeftSKill = styled.div`
   width: 95%;
-  font-weight: 400;
-  opacity: 0.7;
+  font-weight: 500;
+  opacity: 0.5;
 `;
 
 const PositionWebMiddleLeftHr = styled.hr`
@@ -134,8 +175,8 @@ const PositionWebMiddleRightDesContainer = styled.div`
 `;
 
 const PositionWebMiddleRightDesLeftDiv = styled.div`
-  font-weight: 400;
-  opacity: 0.5;
+  font-weight: 600;
+  opacity: 0.4;
   width: 30%;
 `;
 
@@ -208,9 +249,15 @@ const PositionMobileMiddleImgContainer = styled.div`
   width: 100%;
 `;
 
-const PositionMobileMiddleImg = styled.div`
+const PositionMobileMiddleImgNull = styled.div`
   width: 95%;
-  padding-top: 56.25%;
+  padding-top: 70%;
+  background-color: whitesmoke;
+  border-radius: 10px;
+`;
+
+const PositionMobileMiddleImg = styled.img`
+  width: 95%;
   background-color: whitesmoke;
   border-radius: 10px;
 `;
@@ -271,114 +318,164 @@ const PositionMobileApplyBtn = styled.button`
 function Position() {
   const large = useRecoilValue(resizeState);
 
-  return (
-    <PositionContainer>
-      {large === "Mobile" ? (
-        <div>
-          <button>
-            <IoIosArrowBack />
-          </button>
-        </div>
-      ) : null}
-      <PositionCompanyWithPositionContainer>
-        <PositionTopCompanyNameDiv>회사명</PositionTopCompanyNameDiv>
-        <PoositionTopPositionTitleDiv>채용공고명</PoositionTopPositionTitleDiv>
-      </PositionCompanyWithPositionContainer>
-      {large === "Web" ? (
-        <PositionWebMiddleContainer>
-          <PositionWebMiddleLeftContainer>
-            <PositionWebMiddleImgContainer>
-              <PositionWebMiddleLeftImg>사진</PositionWebMiddleLeftImg>
-            </PositionWebMiddleImgContainer>
-            <PositionWebMiddleLeftWhereDiv>
-              "회사명", 어떤 곳인가요?
-            </PositionWebMiddleLeftWhereDiv>
-            <PositionWebMiddleLeftDescription>
-              "채용공고 description"
-            </PositionWebMiddleLeftDescription>
-            <PositionWebMiddleLeftWhereDiv>
-              "채용공고", 무엇을 하나요?
-            </PositionWebMiddleLeftWhereDiv>
-            <PositionWebMiddleLeftSKill>"기술스택"</PositionWebMiddleLeftSKill>
-            <PositionWebMiddleLeftHr />
-            <PositionWebMiddleLeftRegion>근무지역</PositionWebMiddleLeftRegion>
+  const { positionId } = useParams();
 
-            <PositionWebMiddleLeftAddress>
-              "회사 주소"
-            </PositionWebMiddleLeftAddress>
-          </PositionWebMiddleLeftContainer>
-          <PositionWebMiddleRightContainer>
-            <PositionWebMiddleRightDiv>
-              <PositionWebMiddleRightTitle>
-                "채용공고명"
-              </PositionWebMiddleRightTitle>
-              <PositionWebMiddleRightCompany>
-                "회사명"
-              </PositionWebMiddleRightCompany>
-              <PositionWebMiddleRighthr />
-              <PositionWebMiddleRightDesContainer>
-                <PositionWebMiddleRightDesLeftDiv>
-                  연봉
-                </PositionWebMiddleRightDesLeftDiv>
-                <PositionWebMiddleRightDesRightDiv>
-                  "연봉"
-                </PositionWebMiddleRightDesRightDiv>
-              </PositionWebMiddleRightDesContainer>
-              <PositionWebMiddleRightHr />
-              <PositionWebMiddleRightDesContainer>
-                <PositionWebMiddleRightDesLeftDiv>
-                  마감일
-                </PositionWebMiddleRightDesLeftDiv>
-                <PositionWebMiddleRightDesRightDiv>
-                  "마감일"
-                </PositionWebMiddleRightDesRightDiv>
-              </PositionWebMiddleRightDesContainer>
-              <PositionWebMiddleRightBtnContainer>
-                <PositionWebSaveBtn>
-                  <BsBookmarkCheck />
-                </PositionWebSaveBtn>
-                <PositionWebApplyBtn>지원하기</PositionWebApplyBtn>
-              </PositionWebMiddleRightBtnContainer>
-            </PositionWebMiddleRightDiv>
-          </PositionWebMiddleRightContainer>
-        </PositionWebMiddleContainer>
+  const { isLoading, data: positionData } = useQuery(
+    ["positionData", positionId],
+    () => fetchPositionDetail(positionId)
+  );
+
+  console.log(positionData);
+
+  // 뒤로가기
+  const navagate = useNavigate();
+  const handleGoback = () => {
+    navagate(-1);
+  };
+
+  // 추후 지원버튼과 저장 버튼은 일반 유저만 가능하도록 구현한다.
+  const userData = useUser();
+  console.log(userData);
+
+  return (
+    <>
+      {isLoading ? (
+        <Loading />
       ) : (
-        <>
-          <PositionMobileMiddleContainer>
-            <div>
-              <PositionMobileMiddleImgContainer>
-                <PositionMobileMiddleImg>사진</PositionMobileMiddleImg>
-              </PositionMobileMiddleImgContainer>
-              <PositionWebMiddleLeftWhereDiv>
-                "회사명", 어떤 곳인가요?
-              </PositionWebMiddleLeftWhereDiv>
-              <PositionWebMiddleLeftDescription>
-                "채용공고 description"
-              </PositionWebMiddleLeftDescription>
-              <PositionWebMiddleLeftWhereDiv>
-                "채용공고", 무엇을 하나요?
-              </PositionWebMiddleLeftWhereDiv>
-              <PositionWebMiddleLeftDescription>
-                "기술스택"
-              </PositionWebMiddleLeftDescription>
-              <PositionWebMiddleRighthr />
-              <PositionWebMiddleLeftRegion>
-                근무지역
-              </PositionWebMiddleLeftRegion>
-              <PositionWebMiddleLeftAddress>
-                "회사 주소"
-              </PositionWebMiddleLeftAddress>
-            </div>
-          </PositionMobileMiddleContainer>
-          <PositionMobileHeaderContainer>
-            <PositionMobileSaveBtn>
-              <BsBookmarkCheck />
-            </PositionMobileSaveBtn>
-            <PositionMobileApplyBtn>지원하기</PositionMobileApplyBtn>
-          </PositionMobileHeaderContainer>
-        </>
+        <PositionContainer>
+          {large === "Mobile" ? (
+            <BackDiv>
+              <BackBtn onClick={handleGoback}>
+                <IoIosArrowBack />
+              </BackBtn>
+              <BackHr />
+            </BackDiv>
+          ) : null}
+          <PositionCompanyWithPositionContainer>
+            <PositionTopCompanyNameDiv>
+              {positionData.data.companyName}
+            </PositionTopCompanyNameDiv>
+            <PoositionTopPositionTitleDiv>
+              {positionData.data.positionTitle}
+            </PoositionTopPositionTitleDiv>
+          </PositionCompanyWithPositionContainer>
+          {large === "Web" ? (
+            <PositionWebMiddleContainer>
+              <PositionWebMiddleLeftContainer>
+                <PositionWebMiddleImgContainer>
+                  {positionData.data.positionImage === null ? (
+                    <PositionWebMiddleLeftImgNull>
+                      {" "}
+                    </PositionWebMiddleLeftImgNull>
+                  ) : (
+                    <PositionWebMiddleLeftImg
+                      src={positionData.data.positionImage}
+                    />
+                  )}
+                </PositionWebMiddleImgContainer>
+                <PositionWebMiddleLeftWhereDiv>
+                  {positionData.data.positionTitle}, 어떤 곳인가요?
+                </PositionWebMiddleLeftWhereDiv>
+                <PositionWebMiddleLeftDescription>
+                  {positionData.data.description}
+                </PositionWebMiddleLeftDescription>
+                <PositionWebMiddleLeftWhereDiv>
+                  {positionData.data.positionTitle}, 무엇을 하나요?
+                </PositionWebMiddleLeftWhereDiv>
+                <PositionWebMiddleLeftSKill>
+                  {positionData.data.skilled}
+                </PositionWebMiddleLeftSKill>
+                <PositionWebMiddleLeftHr />
+                <PositionWebMiddleLeftRegion>
+                  근무지역
+                </PositionWebMiddleLeftRegion>
+
+                <PositionWebMiddleLeftAddress>
+                  {positionData.data.companyAddress}
+                </PositionWebMiddleLeftAddress>
+              </PositionWebMiddleLeftContainer>
+              <PositionWebMiddleRightContainer>
+                <PositionWebMiddleRightDiv>
+                  <PositionWebMiddleRightTitle>
+                    {positionData.data.positionTitle}
+                  </PositionWebMiddleRightTitle>
+                  <PositionWebMiddleRightCompany>
+                    {positionData.data.companyName}
+                  </PositionWebMiddleRightCompany>
+                  <PositionWebMiddleRighthr />
+                  <PositionWebMiddleRightDesContainer>
+                    <PositionWebMiddleRightDesLeftDiv>
+                      연봉
+                    </PositionWebMiddleRightDesLeftDiv>
+                    <PositionWebMiddleRightDesRightDiv>
+                      {positionData.data.salary}
+                    </PositionWebMiddleRightDesRightDiv>
+                  </PositionWebMiddleRightDesContainer>
+                  <PositionWebMiddleRightHr />
+                  <PositionWebMiddleRightDesContainer>
+                    <PositionWebMiddleRightDesLeftDiv>
+                      마감일
+                    </PositionWebMiddleRightDesLeftDiv>
+                    <PositionWebMiddleRightDesRightDiv>
+                      {positionData.data.deadline}
+                    </PositionWebMiddleRightDesRightDiv>
+                  </PositionWebMiddleRightDesContainer>
+                  <PositionWebMiddleRightBtnContainer>
+                    <PositionWebSaveBtn>
+                      <BsBookmarkCheck />
+                    </PositionWebSaveBtn>
+                    <PositionWebApplyBtn>지원하기</PositionWebApplyBtn>
+                  </PositionWebMiddleRightBtnContainer>
+                </PositionWebMiddleRightDiv>
+              </PositionWebMiddleRightContainer>
+            </PositionWebMiddleContainer>
+          ) : (
+            <>
+              <PositionMobileMiddleContainer>
+                <div>
+                  <PositionMobileMiddleImgContainer>
+                    {positionData.data.positionImage === null ? (
+                      <PositionMobileMiddleImgNull>
+                        {" "}
+                      </PositionMobileMiddleImgNull>
+                    ) : (
+                      <PositionMobileMiddleImg
+                        src={positionData.data.positionImage}
+                      />
+                    )}
+                  </PositionMobileMiddleImgContainer>
+                  <PositionWebMiddleLeftWhereDiv>
+                    {positionData.data.positionTitle}, 어떤 곳인가요?
+                  </PositionWebMiddleLeftWhereDiv>
+                  <PositionWebMiddleLeftDescription>
+                    {positionData.data.description}
+                  </PositionWebMiddleLeftDescription>
+                  <PositionWebMiddleLeftWhereDiv>
+                    {positionData.data.positionTitle}, 무엇을 하나요?
+                  </PositionWebMiddleLeftWhereDiv>
+                  <PositionWebMiddleLeftSKill>
+                    {positionData.data.skilled}
+                  </PositionWebMiddleLeftSKill>
+                  <PositionWebMiddleRighthr />
+                  <PositionWebMiddleLeftRegion>
+                    근무지역
+                  </PositionWebMiddleLeftRegion>
+                  <PositionWebMiddleLeftAddress>
+                    {positionData.data.companyAddress}
+                  </PositionWebMiddleLeftAddress>
+                </div>
+              </PositionMobileMiddleContainer>
+              <PositionMobileHeaderContainer>
+                <PositionMobileSaveBtn>
+                  <BsBookmarkCheck />
+                </PositionMobileSaveBtn>
+                <PositionMobileApplyBtn>지원하기</PositionMobileApplyBtn>
+              </PositionMobileHeaderContainer>
+            </>
+          )}
+        </PositionContainer>
       )}
-    </PositionContainer>
+    </>
   );
 }
 
