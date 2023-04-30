@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import useMutations from "../../Libs/useMutation";
+import useMutations from "../../Libs/useMutations";
 
 const JoinContainer = styled.div`
   margin-top: 30px;
