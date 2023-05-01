@@ -2,12 +2,14 @@ import styled from "styled-components";
 import { useRecoilValue } from "recoil";
 import { resizeState } from "../../atom";
 import { IoIosArrowBack } from "react-icons/io";
-import { BsBookmarkCheck } from "react-icons/bs";
-import { useQuery } from "@tanstack/react-query";
+import { BsBookmarkCheck, BsBookmarkCheckFill } from "react-icons/bs";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchPositionDetail } from "../../Libs/api";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../Components/Loading";
 import useUser from "../../Libs/useUser";
+import useMuatationH from "../../Libs/useMutationH";
+import useMutations from "../../Libs/useMutations";
 
 const PositionContainer = styled.div`
   width: 85%;
@@ -197,7 +199,6 @@ const PositionWebMiddleRightBtnContainer = styled.div`
 `;
 
 const PositionWebSaveBtn = styled.button`
-  color: black;
   border: 1px solid;
   border-radius: 0.375rem;
   font-size: 18px;
@@ -206,10 +207,12 @@ const PositionWebSaveBtn = styled.button`
   width: 60px;
   height: 50px;
   cursor: pointer;
+  color: ${(props) => (props.liked ? "#2b90d9" : "#d9e1e8")};
   background-color: white;
   border-color: #d9e1e8;
   &:hover {
     background-color: whitesmoke;
+    color: ${(props) => (props.liked ? "blue" : "gray")};
   }
 `;
 
@@ -276,19 +279,20 @@ const PositionMobileHeaderContainer = styled.div`
 `;
 
 const PositionMobileSaveBtn = styled.button`
-  color: black;
   border: 1px solid;
   border-radius: 0.375rem;
   font-size: 18px;
   line-height: 20px;
   font-weight: 500;
-  width: 50px;
+  width: 45px;
   height: 38px;
   cursor: pointer;
+  color: ${(props) => (props.liked ? "#2b90d9" : "#d9e1e8")};
   background-color: white;
   border-color: #d9e1e8;
   &:hover {
     background-color: whitesmoke;
+    color: ${(props) => (props.liked ? "blue" : "gray")};
   }
 `;
 
@@ -320,22 +324,73 @@ function Position() {
 
   const { positionId } = useParams();
 
-  const { isLoading, data: positionData } = useQuery(
-    ["positionData", positionId],
-    () => fetchPositionDetail(positionId)
+  const {
+    isLoading,
+    data: positionData,
+    refetch,
+  } = useQuery(["positionData", positionId], () =>
+    fetchPositionDetail(positionId)
   );
 
   console.log(positionData);
 
   // 뒤로가기
-  const navagate = useNavigate();
+  const navigate = useNavigate();
   const handleGoback = () => {
-    navagate(-1);
+    navigate(-1);
   };
 
-  // 추후 지원버튼과 저장 버튼은 일반 유저만 가능하도록 구현한다.
+  // 저장 버튼 클릭
   const userData = useUser();
-  console.log(userData);
+  const [toggleSave, { loading }] = useMuatationH(
+    `/position/${positionId}/save`
+  );
+
+  const onSaveClick = () => {
+    if (userData?.authority !== "ROLE_USER") {
+      return alert("일반 유저만 저장할 수 있습니다.");
+    }
+
+    if (!positionData) return;
+    mutate();
+
+    if (!loading) {
+      toggleSave({});
+    }
+    setTimeout(() => {
+      refetch();
+    }, 50);
+  };
+
+  // 저장 버튼 옵티미스틱 UI
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation(
+    useMutations(`http://localhost:8080/api/position/${positionId}`),
+    {
+      onMutate: async (newData) => {
+        await queryClient.cancelQueries(["positionData", positionId]);
+        const prevCata = queryClient.getQueryData(["positionData", positionId]);
+
+        queryClient.setQueryData(["positionData", positionId], () => ({
+          ...positionData,
+          data2: !positionData?.data2,
+        }));
+        return {
+          prevCata,
+        };
+      },
+    }
+  );
+
+  // 지원하기 버튼 클릭
+  const onApplyClick = () => {
+    if (userData?.authority !== "ROLE_USER") {
+      return alert("일반 유저만 저장할 수 있습니다.");
+    }
+
+    navigate(`/application/${positionId}`);
+  };
 
   return (
     <>
@@ -353,37 +408,37 @@ function Position() {
           ) : null}
           <PositionCompanyWithPositionContainer>
             <PositionTopCompanyNameDiv>
-              {positionData.data.companyName}
+              {positionData?.data?.companyName}
             </PositionTopCompanyNameDiv>
             <PoositionTopPositionTitleDiv>
-              {positionData.data.positionTitle}
+              {positionData?.data?.positionTitle}
             </PoositionTopPositionTitleDiv>
           </PositionCompanyWithPositionContainer>
           {large === "Web" ? (
             <PositionWebMiddleContainer>
               <PositionWebMiddleLeftContainer>
                 <PositionWebMiddleImgContainer>
-                  {positionData.data.positionImage === null ? (
+                  {positionData?.data?.positionImage === null ? (
                     <PositionWebMiddleLeftImgNull>
                       {" "}
                     </PositionWebMiddleLeftImgNull>
                   ) : (
                     <PositionWebMiddleLeftImg
-                      src={positionData.data.positionImage}
+                      src={positionData?.data?.positionImage}
                     />
                   )}
                 </PositionWebMiddleImgContainer>
                 <PositionWebMiddleLeftWhereDiv>
-                  {positionData.data.positionTitle}, 어떤 곳인가요?
+                  {positionData?.data?.positionTitle}, 어떤 곳인가요?
                 </PositionWebMiddleLeftWhereDiv>
                 <PositionWebMiddleLeftDescription>
-                  {positionData.data.description}
+                  {positionData?.data?.description}
                 </PositionWebMiddleLeftDescription>
                 <PositionWebMiddleLeftWhereDiv>
-                  {positionData.data.positionTitle}, 무엇을 하나요?
+                  {positionData?.data?.positionTitle}, 무엇을 하나요?
                 </PositionWebMiddleLeftWhereDiv>
                 <PositionWebMiddleLeftSKill>
-                  {positionData.data.skilled}
+                  {positionData?.data?.skilled}
                 </PositionWebMiddleLeftSKill>
                 <PositionWebMiddleLeftHr />
                 <PositionWebMiddleLeftRegion>
@@ -391,16 +446,16 @@ function Position() {
                 </PositionWebMiddleLeftRegion>
 
                 <PositionWebMiddleLeftAddress>
-                  {positionData.data.companyAddress}
+                  {positionData?.data?.companyAddress}
                 </PositionWebMiddleLeftAddress>
               </PositionWebMiddleLeftContainer>
               <PositionWebMiddleRightContainer>
                 <PositionWebMiddleRightDiv>
                   <PositionWebMiddleRightTitle>
-                    {positionData.data.positionTitle}
+                    {positionData?.data?.positionTitle}
                   </PositionWebMiddleRightTitle>
                   <PositionWebMiddleRightCompany>
-                    {positionData.data.companyName}
+                    {positionData?.data?.companyName}
                   </PositionWebMiddleRightCompany>
                   <PositionWebMiddleRighthr />
                   <PositionWebMiddleRightDesContainer>
@@ -408,7 +463,7 @@ function Position() {
                       연봉
                     </PositionWebMiddleRightDesLeftDiv>
                     <PositionWebMiddleRightDesRightDiv>
-                      {positionData.data.salary}
+                      {positionData?.data?.salary}
                     </PositionWebMiddleRightDesRightDiv>
                   </PositionWebMiddleRightDesContainer>
                   <PositionWebMiddleRightHr />
@@ -417,14 +472,19 @@ function Position() {
                       마감일
                     </PositionWebMiddleRightDesLeftDiv>
                     <PositionWebMiddleRightDesRightDiv>
-                      {positionData.data.deadline}
+                      {positionData?.data?.deadline}
                     </PositionWebMiddleRightDesRightDiv>
                   </PositionWebMiddleRightDesContainer>
                   <PositionWebMiddleRightBtnContainer>
-                    <PositionWebSaveBtn>
-                      <BsBookmarkCheck />
+                    <PositionWebSaveBtn
+                      liked={positionData.data2}
+                      onClick={onSaveClick}
+                    >
+                      <BsBookmarkCheckFill />
                     </PositionWebSaveBtn>
-                    <PositionWebApplyBtn>지원하기</PositionWebApplyBtn>
+                    <PositionWebApplyBtn onClick={onApplyClick}>
+                      지원하기
+                    </PositionWebApplyBtn>
                   </PositionWebMiddleRightBtnContainer>
                 </PositionWebMiddleRightDiv>
               </PositionWebMiddleRightContainer>
@@ -434,42 +494,47 @@ function Position() {
               <PositionMobileMiddleContainer>
                 <div>
                   <PositionMobileMiddleImgContainer>
-                    {positionData.data.positionImage === null ? (
+                    {positionData?.data?.positionImage === null ? (
                       <PositionMobileMiddleImgNull>
                         {" "}
                       </PositionMobileMiddleImgNull>
                     ) : (
                       <PositionMobileMiddleImg
-                        src={positionData.data.positionImage}
+                        src={positionData?.data?.positionImage}
                       />
                     )}
                   </PositionMobileMiddleImgContainer>
                   <PositionWebMiddleLeftWhereDiv>
-                    {positionData.data.positionTitle}, 어떤 곳인가요?
+                    {positionData?.data?.positionTitle}, 어떤 곳인가요?
                   </PositionWebMiddleLeftWhereDiv>
                   <PositionWebMiddleLeftDescription>
-                    {positionData.data.description}
+                    {positionData?.data?.description}
                   </PositionWebMiddleLeftDescription>
                   <PositionWebMiddleLeftWhereDiv>
-                    {positionData.data.positionTitle}, 무엇을 하나요?
+                    {positionData?.data?.positionTitle}, 무엇을 하나요?
                   </PositionWebMiddleLeftWhereDiv>
                   <PositionWebMiddleLeftSKill>
-                    {positionData.data.skilled}
+                    {positionData?.data?.skilled}
                   </PositionWebMiddleLeftSKill>
                   <PositionWebMiddleRighthr />
                   <PositionWebMiddleLeftRegion>
                     근무지역
                   </PositionWebMiddleLeftRegion>
                   <PositionWebMiddleLeftAddress>
-                    {positionData.data.companyAddress}
+                    {positionData?.data?.companyAddress}
                   </PositionWebMiddleLeftAddress>
                 </div>
               </PositionMobileMiddleContainer>
               <PositionMobileHeaderContainer>
-                <PositionMobileSaveBtn>
-                  <BsBookmarkCheck />
+                <PositionMobileSaveBtn
+                  liked={positionData.data2}
+                  onClick={onSaveClick}
+                >
+                  <BsBookmarkCheckFill />
                 </PositionMobileSaveBtn>
-                <PositionMobileApplyBtn>지원하기</PositionMobileApplyBtn>
+                <PositionMobileApplyBtn onClick={onApplyClick}>
+                  지원하기
+                </PositionMobileApplyBtn>
               </PositionMobileHeaderContainer>
             </>
           )}
