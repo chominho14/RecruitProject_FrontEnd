@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Root from "../Root";
-import Application from "../Routes/Company/Application";
+import Application from "../Routes/Application/Application";
 import CompanyJoin from "../Routes/Company/CompanyJoin";
 import Upload from "../Routes/Company/Upload";
 import Home from "../Routes/Home/Home";
@@ -55,7 +55,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "company/application",
+        path: "application/:positionId",
         element: <Application />,
       },
       {
