@@ -8,8 +8,8 @@ import { useEffect, useState } from "react";
 import { AiOutlineHome } from "react-icons/ai";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { BiUser } from "react-icons/bi";
-import { BsBuilding } from "react-icons/bs";
 import useUser from "../Libs/useUser";
+import { BsBuilding } from "react-icons/bs";
 
 // -----------------------웹 헤더 ------------------------
 
@@ -24,6 +24,7 @@ const WebNav = styled.nav`
   padding: 20px 60px;
   background-color: #d9e1e8;
   opacity: 0.7;
+  z-index: 1;
 `;
 
 const Logo = styled.div`
@@ -94,6 +95,7 @@ const Mobile = styled.nav`
   justify-content: space-between;
   font-size: 0.75rem;
   line-height: 1rem;
+  z-index: 1;
 `;
 
 const MobileItemHome = styled.a`
@@ -132,6 +134,18 @@ const MobileItemCompanyApp = styled.a`
   }
 `;
 
+const MobileItemCompanyUpload = styled.a`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  color: ${(props) => (props.companyUploadMatch ? "#2b90d9" : "gray")};
+  font-size: large;
+  :hover {
+    color: #2b90d9;
+  }
+`;
+
 const MobileItemProfile = styled.a`
   display: flex;
   flex-direction: column;
@@ -155,7 +169,7 @@ function Header() {
   const profileMatch = useMatch("/profile");
   const loginMatch = useMatch("/login");
   const joinMatch = useMatch("/join");
-  const companyAppMatch = useMatch("/company/application");
+  const companyAppMatch = useMatch("/company/positionList");
   const companyUploadMatch = useMatch("/company/upload");
 
   // 내 이력서 페이지 일반 유저에게만 접근 가능
@@ -212,10 +226,10 @@ function Header() {
                 ) : (
                   <>
                     <Item>
-                      <Link to={"/company/application"}>
+                      <Link to={"/company/positionList"}>
                         지원 현황
                         {companyAppMatch?.pathname ===
-                          "/company/application" && (
+                          "/company/positionList" && (
                           <Circle layoutId="circle" />
                         )}
                       </Link>
@@ -297,14 +311,14 @@ function Header() {
                 </MobileItemResume>
               </Link>
 
-              <Link to={"/"}>
+              {/* <Link to={"/"}>
                 <MobileItemHome
                   homeMatch={homeMatch?.pathname === "/" ? true : false}
                 >
                   <BsBuilding />
                   <MobileSpan>채용공고</MobileSpan>
                 </MobileItemHome>
-              </Link>
+              </Link> */}
 
               {/* <Link to={"/profile"} onClick={onProfileClick}> */}
               <Link to={"/profile"}>
@@ -329,10 +343,10 @@ function Header() {
                 </MobileItemHome>
               </Link>
 
-              <Link to={"/company/application"}>
+              <Link to={"/company/positionList"}>
                 <MobileItemCompanyApp
                   companyAppMatch={
-                    companyAppMatch?.pathname === "/company/application"
+                    companyAppMatch?.pathname === "/company/positionList"
                       ? true
                       : false
                   }
@@ -342,13 +356,17 @@ function Header() {
                 </MobileItemCompanyApp>
               </Link>
 
-              <Link to={"/"}>
-                <MobileItemHome
-                  homeMatch={homeMatch?.pathname === "/" ? true : false}
+              <Link to={"/company/upload"}>
+                <MobileItemCompanyUpload
+                  companyUploadMatch={
+                    companyUploadMatch?.pathname === "/company/upload"
+                      ? true
+                      : false
+                  }
                 >
                   <BsBuilding />
-                  <MobileSpan>채용공고</MobileSpan>
-                </MobileItemHome>
+                  <MobileSpan>채용업로드</MobileSpan>
+                </MobileItemCompanyUpload>
               </Link>
 
               {/* <Link to={"/profile"} onClick={onProfileClick}> */}

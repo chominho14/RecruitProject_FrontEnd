@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Root from "../Root";
 import Application from "../Routes/Application/Application";
+import ApplyList from "../Routes/Company/ApplyList";
 import CompanyJoin from "../Routes/Company/CompanyJoin";
 import Upload from "../Routes/Company/Upload";
 import Home from "../Routes/Home/Home";
@@ -65,6 +66,13 @@ const router = createBrowserRouter([
       {
         path: "company/companyjoin",
         element: <CompanyJoin />,
+      },
+      {
+        path: "company/positionList",
+        element: <ApplyList />,
+      },
+      {
+        path: "company/applylist",
       },
     ],
     errorElement: <NotFound />,
