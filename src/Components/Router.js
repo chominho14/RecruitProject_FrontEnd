@@ -14,6 +14,7 @@ import Submitted from "../Routes/Profile/Submitted";
 import Resume from "../Routes/Resume/Resume";
 import ErrorComponent from "./ErrorComponent";
 import NotFound from "./NotFound";
+import ApplyListId from "../Routes/Company/ApplyListId";
 
 const router = createBrowserRouter([
   {
@@ -72,7 +73,8 @@ const router = createBrowserRouter([
         element: <ApplyList />,
       },
       {
-        path: "company/applylist",
+        path: "company/positionList/:positionId",
+        element: <ApplyListId />,
       },
     ],
     errorElement: <NotFound />,
