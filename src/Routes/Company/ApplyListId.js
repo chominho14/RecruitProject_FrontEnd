@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import CompanyApplyList from "../../Components/CompanyApplyList";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPositionList, fetchResumeList } from "../../Libs/api";
+import {
+  fetchPositionDetail,
+  fetchPositionList,
+  fetchResumeList,
+} from "../../Libs/api";
 import { useRecoilValue } from "recoil";
 import { resizeState } from "../../atom";
 import { useNavigate } from "react-router-dom";
@@ -53,7 +57,7 @@ const ApplySubContainer = styled.div`
 
 const ApplyTitle = styled.div`
   width: 100%;
-  font-weight: 500;
+  font-weight: 400;
   font-size: x-large;
   max-width: 500px;
   margin: auto;
@@ -68,14 +72,22 @@ const ApplyPositionContainer = styled.div`
 function ApplyListId() {
   const large = useRecoilValue(resizeState);
   const { positionId } = useParams();
-  console.log(positionId);
 
-  const { data: resumeListData, isLoading } = useQuery(
+  // 이력서 리스트 가져오기
+  const { data: resumeListData, isLoading: resumeLoading } = useQuery(
     ["alllResume", positionId],
     () => fetchResumeList(positionId)
   );
-
   console.log(resumeListData);
+
+  // 채용 정보 가져오기
+
+  const { data: companyData, isLoading: companyLoading } = useQuery(
+    ["companyData", positionId],
+    () => fetchPositionDetail(positionId)
+  );
+
+  console.log(companyData);
 
   // 뒤로가기
   const navagate = useNavigate();
@@ -85,7 +97,7 @@ function ApplyListId() {
 
   return (
     <>
-      {isLoading ? (
+      {resumeLoading ? (
         <Loading />
       ) : (
         <ApplyListContainer>
@@ -99,7 +111,10 @@ function ApplyListId() {
           ) : null}
 
           <ApplySubContainer>
-            <ApplyTitle>{"채용"}에 지원한 사람들이에요.</ApplyTitle>
+            <ApplyTitle>
+              {companyLoading ? "loading..." : companyData.data.positionTitle}에
+              지원한 사람들이에요.
+            </ApplyTitle>
             <ApplyPositionContainer>
               {resumeListData?.data.map((resumeData) => (
                 <PositionApplyList
