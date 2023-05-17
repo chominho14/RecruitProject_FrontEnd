@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useRecoilValue } from "recoil";
 import { resizeState } from "../../atom";
 import { IoIosArrowBack } from "react-icons/io";
-import { BsBookmarkCheck, BsBookmarkCheckFill } from "react-icons/bs";
+import { BsBookmarkCheckFill } from "react-icons/bs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchPositionDetail } from "../../Libs/api";
 import { useNavigate, useParams } from "react-router-dom";
@@ -239,6 +239,25 @@ const PositionWebApplyBtn = styled.button`
   }
 `;
 
+// 지원 완료 됐을 시 버튼
+
+const PositionApplyCompleteBtn = styled.div`
+  color: white;
+  border: 1px;
+  border-color: transparent;
+  border-radius: 0.375rem;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  width: 100%;
+  padding: 5px;
+  margin-left: 4px;
+  text-align: center;
+  padding-top: 14px;
+  cursor: not-allowed;
+  background-color: #d9e1e8;
+`;
+
 // ------------------모바일 화면 -------------------------
 
 const PositionMobileMiddleContainer = styled.div`
@@ -319,6 +338,23 @@ const PositionMobileApplyBtn = styled.button`
   }
 `;
 
+const PositionMobileApplyCompleteBtn = styled.div`
+  color: white;
+  border: 1px;
+  border-color: transparent;
+  border-radius: 0.375rem;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  width: 100%;
+  padding: 5px;
+  margin-left: 4px;
+  text-align: center;
+  padding-top: 10px;
+  cursor: not-allowed;
+  background-color: #d9e1e8;
+`;
+
 function Position() {
   const large = useRecoilValue(resizeState);
 
@@ -386,7 +422,10 @@ function Position() {
   // 지원하기 버튼 클릭
   const onApplyClick = () => {
     if (userData?.authority !== "ROLE_USER") {
-      return alert("일반 유저만 저장할 수 있습니다.");
+      return alert("일반 유저만 지원할 수 있습니다.");
+    }
+    if (positionData?.data3.applyStatus === "APPLY_OK") {
+      return alert("지원한 채용공고는 다시 지원이 안 됩니다.");
     }
 
     navigate(`/application/${positionId}`);
@@ -482,9 +521,15 @@ function Position() {
                     >
                       <BsBookmarkCheckFill />
                     </PositionWebSaveBtn>
-                    <PositionWebApplyBtn onClick={onApplyClick}>
-                      지원하기
-                    </PositionWebApplyBtn>
+                    {positionData?.data3.applyStatus === "APPLY_OK" ? (
+                      <PositionApplyCompleteBtn>
+                        지원 완료
+                      </PositionApplyCompleteBtn>
+                    ) : (
+                      <PositionWebApplyBtn onClick={onApplyClick}>
+                        지원하기
+                      </PositionWebApplyBtn>
+                    )}
                   </PositionWebMiddleRightBtnContainer>
                 </PositionWebMiddleRightDiv>
               </PositionWebMiddleRightContainer>
@@ -532,9 +577,15 @@ function Position() {
                 >
                   <BsBookmarkCheckFill />
                 </PositionMobileSaveBtn>
-                <PositionMobileApplyBtn onClick={onApplyClick}>
-                  지원하기
-                </PositionMobileApplyBtn>
+                {positionData?.data3.applyStatus === "APPLY_OK" ? (
+                  <PositionMobileApplyCompleteBtn>
+                    지원 완료
+                  </PositionMobileApplyCompleteBtn>
+                ) : (
+                  <PositionMobileApplyBtn onClick={onApplyClick}>
+                    지원하기
+                  </PositionMobileApplyBtn>
+                )}
               </PositionMobileHeaderContainer>
             </>
           )}
