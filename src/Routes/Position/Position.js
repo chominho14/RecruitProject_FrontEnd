@@ -521,7 +521,7 @@ function Position() {
                     >
                       <BsBookmarkCheckFill />
                     </PositionWebSaveBtn>
-                    {positionData?.data3.applyStatus === "APPLY_OK" ? (
+                    {positionData?.data3?.applyStatus === "APPLY_OK" ? (
                       <PositionApplyCompleteBtn>
                         지원 완료
                       </PositionApplyCompleteBtn>
@@ -577,7 +577,7 @@ function Position() {
                 >
                   <BsBookmarkCheckFill />
                 </PositionMobileSaveBtn>
-                {positionData?.data3.applyStatus === "APPLY_OK" ? (
+                {positionData?.data3?.applyStatus === "APPLY_OK" ? (
                   <PositionMobileApplyCompleteBtn>
                     지원 완료
                   </PositionMobileApplyCompleteBtn>
