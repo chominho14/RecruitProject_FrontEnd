@@ -4,6 +4,8 @@
 
 ## FrontEnd
 
+- Notion. https://gleaming-garlic-1d6.notion.site/Recruit-WebSite-Project-9eca5e3a2983469bb453096a54654f30
+
 ---
 
 - 채용사이트의 Front는 ReactJS를 사용하여 구현합니다.
