@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { BsFiletypePdf } from "react-icons/bs";
+import { BsFileEarmarkPlus } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { resizeState } from "../../atom";
 import { IoIosArrowBack } from "react-icons/io";
 import { MdOutlineCancel } from "react-icons/md";
 import axios from "axios";
+import ModalBasic from "../../Components/ModalBasic";
 
 // ------------------ 뒤로가기 ----------------
 
@@ -49,7 +50,7 @@ const ApplyContainer = styled.div`
   padding-top: 30px;
   margin-left: auto;
   margin-right: auto;
-  width: 60%;
+  width: 75%;
 `;
 
 const ApplyForm = styled.form`
@@ -81,6 +82,15 @@ const ApplyFormLabel = styled.label`
   margin-left: auto;
   max-width: 500px;
   color: rgba(0, 0, 0, 0.9);
+`;
+
+const ApplyFormLabelDetail = styled.div`
+  font-size: 13px;
+  font-weight: 600;
+  padding-top: 4px;
+  padding-left: 10px;
+  color: rgba(0, 0, 0, 0.5);
+  margin-top: 5px;
 `;
 
 const ApplyFormImgLabel = styled.label`
@@ -161,6 +171,7 @@ const ApplyBtn = styled.button`
 const ResumeImageContainer = styled.div`
   width: 100%;
   height: 100px;
+  margin: 0 auto;
 `;
 
 const ResumeImageContainerDiv = styled.div`
@@ -171,11 +182,15 @@ const ResumeImageContainerDiv = styled.div`
   opacity: 0.5;
 `;
 
-const ResumeImageFileChangeBtn = styled.button`
+const ResumeImageFileChangeDiv = styled.div`
   position: absolute;
-  top: 300px;
-  right: 60px;
+  top: 340px;
+  width: 85%;
+  max-width: 550px;
+`;
 
+const ResumeImageFileChangeBtn = styled.button`
+  float: right;
   color: white;
   border: 1px;
   border-color: transparent;
@@ -199,6 +214,35 @@ const ResumeImageFileChangeBtn = styled.button`
   }
 `;
 
+// --------------- 개인정보 제공 동의 --------------
+
+const ResumePrivacyContainer = styled.div`
+  display: flex;
+  background-color: #d9e1e8;
+  border-radius: 7px;
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+`;
+
+const ResumePrivacySubContainer = styled.div`
+  display: flex;
+  font-weight: 500;
+  font-size: 13px;
+  margin-top: 3px;
+`;
+
+const ResumePrivacySubmitDiv = styled.div`
+  color: rgba(0, 66, 255);
+  cursor: pointer;
+  &:hover {
+    color: rgba(0, 0, 255);
+  }
+`;
+
 function Application() {
   const navigate = useNavigate();
   // form 백엔드 데이터 전송
@@ -207,7 +251,7 @@ function Application() {
   // 사진 첨부 시 사진 보이기
 
   const resume = watch("resume");
-  console.log(resume);
+
   const [resumePreview, setResumePreview] = useState("");
   useEffect(() => {
     if (resume && resume.length > 0) {
@@ -216,9 +260,20 @@ function Application() {
     }
   }, [resume]);
 
+  // 개인정보 동의 체크 여부
+  const [privacyCheck, setPrivacyCheck] = useState(false);
+  const onCheckPrivacy = () => {
+    setPrivacyCheck((prev) => !prev);
+  };
+  console.log(privacyCheck);
+
   // 지원 버튼 클릭시
   const { positionId } = useParams();
   const onValid = ({ resume }) => {
+    if (!privacyCheck)
+      return alert(
+        "채용 전형 진행을 위해 개인정보 제3자 제공에 동의해 주세요."
+      );
     if (resume && resume.length > 0) {
       const formData = new FormData();
 
@@ -249,56 +304,87 @@ function Application() {
     navigate(-1);
   };
 
-  return (
-    <ApplyContainer>
-      {large === "Mobile" ? (
-        <BackDiv>
-          <BackBtn onClick={handleGoback}>
-            <IoIosArrowBack />
-          </BackBtn>
-          <BackHr />
-        </BackDiv>
-      ) : null}
-      <ApplyForm onSubmit={handleSubmit(onValid)}>
-        <ApplyFormLabelDiv>
-          <ApplyFormLabel>
-            이력서 첨부 <span style={{ color: "#ff7f00" }}>*</span>
-          </ApplyFormLabel>
-        </ApplyFormLabelDiv>
-        <UploadFormImgDiv>
-          {resumePreview.length === 0 || resume === undefined ? (
-            <ApplyFormImgLabel>
-              <BsFiletypePdf />
-              <ApplyInput
-                {...register("resume")}
-                type="file"
-                accept=".pdf"
-                style={{ display: "none" }}
-              />
-            </ApplyFormImgLabel>
-          ) : (
-            <ResumeImageContainer>
-              <ResumeImageContainerDiv>
-                {"첨부파일 : " + resumePreview}
-              </ResumeImageContainerDiv>
-              <ResumeImageFileChangeBtn
-                onClick={() => {
-                  reset({
-                    data: "resume",
-                  });
-                }}
-              >
-                <MdOutlineCancel />
-              </ResumeImageFileChangeBtn>
-            </ResumeImageContainer>
-          )}
-        </UploadFormImgDiv>
+  // 모달창
+  const [modalOpen, setModalOpen] = useState(false);
+  const showModal = () => {
+    setModalOpen((prev) => !prev);
+  };
 
-        <ApplyBtnDiv>
-          <ApplyBtn>지원 버튼</ApplyBtn>
-        </ApplyBtnDiv>
-      </ApplyForm>
-    </ApplyContainer>
+  return (
+    <>
+      <ApplyContainer>
+        {large === "Mobile" ? (
+          <BackDiv>
+            <BackBtn onClick={handleGoback}>
+              <IoIosArrowBack />
+            </BackBtn>
+            <BackHr />
+          </BackDiv>
+        ) : null}
+        <ApplyForm onSubmit={handleSubmit(onValid)}>
+          <ApplyFormLabelDiv>
+            <ApplyFormLabel>
+              이력서를 첨부해 주세요.
+              <span style={{ color: "#ff7f00" }}>*</span>
+              <ApplyFormLabelDetail>- pdf, docx, hwp 가능</ApplyFormLabelDetail>
+              <ApplyFormLabelDetail>
+                - 여러장은 압축하여 업로드해주세요.
+              </ApplyFormLabelDetail>
+            </ApplyFormLabel>
+          </ApplyFormLabelDiv>
+          <UploadFormImgDiv>
+            {resumePreview.length === 0 || resume === undefined ? (
+              <ApplyFormImgLabel>
+                <BsFileEarmarkPlus />
+                <ApplyInput
+                  {...register("resume")}
+                  type="file"
+                  accept=".pdf, .docx, .hwp, .zip"
+                  style={{ display: "none" }}
+                />
+              </ApplyFormImgLabel>
+            ) : (
+              <ResumeImageContainer>
+                <ResumeImageContainerDiv>
+                  {"첨부파일 : " + resumePreview}
+                </ResumeImageContainerDiv>
+                <ResumeImageFileChangeDiv>
+                  <ResumeImageFileChangeBtn
+                    onClick={() => {
+                      reset({
+                        data: "resume",
+                      });
+                    }}
+                  >
+                    <MdOutlineCancel />
+                  </ResumeImageFileChangeBtn>
+                </ResumeImageFileChangeDiv>
+              </ResumeImageContainer>
+            )}
+          </UploadFormImgDiv>
+          <ResumePrivacyContainer>
+            <input
+              type="checkbox"
+              checked={privacyCheck}
+              onChange={onCheckPrivacy}
+            ></input>
+            <ResumePrivacySubContainer>
+              &nbsp;채용 전형 진행을 위해 &nbsp;
+              <ResumePrivacySubmitDiv onClick={showModal}>
+                개인정보 제3자 제공
+              </ResumePrivacySubmitDiv>
+              에 동의합니다.
+              <div style={{ color: "gray" }}>&nbsp;(필수)</div>
+            </ResumePrivacySubContainer>
+          </ResumePrivacyContainer>
+
+          <ApplyBtnDiv>
+            <ApplyBtn>지원 버튼</ApplyBtn>
+          </ApplyBtnDiv>
+        </ApplyForm>
+      </ApplyContainer>
+      {modalOpen && <ModalBasic setModalOpen={setModalOpen} />}
+    </>
   );
 }
 
