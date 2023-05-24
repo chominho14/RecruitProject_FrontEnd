@@ -50,10 +50,11 @@ const ApplySubContainer = styled.div`
 `;
 
 const ApplyTitle = styled.div`
-  width: 100%;
+  width: 60%;
   font-weight: 500;
   font-size: x-large;
   max-width: 500px;
+  min-width: 300px;
   margin: auto;
 `;
 
@@ -61,6 +62,15 @@ const ApplyPositionContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 20px;
+  width: 60%;
+  margin: 0 auto;
+  min-width: 300px;
+`;
+
+const ApplyPositionNoData = styled.div`
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.5);
 `;
 
 function ApplyList() {
@@ -96,21 +106,29 @@ function ApplyList() {
 
           <ApplySubContainer>
             <ApplyTitle>
-              {positionListData.data
-                ? positionListData.data[0].company.companyName
+              {positionListData?.data2
+                ? positionListData?.data2?.companyName
                 : "우리 기업"}
               의 포지션
             </ApplyTitle>
-            <ApplyPositionContainer>
-              {positionListData.data.map((positionData) => (
-                <CompanyApplyList
-                  key={positionData.id}
-                  id={positionData.id}
-                  positionName={positionData.positionTitle}
-                  skill={positionData.skilled}
-                />
-              ))}
-            </ApplyPositionContainer>
+            {positionListData?.data ? (
+              <ApplyPositionContainer>
+                {positionListData?.data?.map((positionData) => (
+                  <CompanyApplyList
+                    key={positionData.id}
+                    id={positionData.id}
+                    positionName={positionData.positionName}
+                    skill={positionData.positionSkilled}
+                  />
+                ))}
+              </ApplyPositionContainer>
+            ) : (
+              <ApplyPositionContainer>
+                <ApplyPositionNoData>
+                  데이터가 존재하지 않습니다.
+                </ApplyPositionNoData>
+              </ApplyPositionContainer>
+            )}
           </ApplySubContainer>
         </ApplyContainer>
       )}

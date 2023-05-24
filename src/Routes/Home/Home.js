@@ -35,6 +35,12 @@ const CompanyInfoMobile = styled.div`
   padding-bottom: 40px;
 `;
 
+const ApplyPositionNoData = styled.div`
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.5);
+`;
+
 function Home() {
   const large = useRecoilValue(resizeState);
 
@@ -42,6 +48,8 @@ function Home() {
     ["allPosition"],
     fetchHomePositions
   );
+
+  console.log(allPositionData);
 
   return (
     <HomeContainer>
@@ -52,7 +60,32 @@ function Home() {
           <>
             {large === "Web" ? (
               <CompanyInfoGrid>
-                {allPositionData?.data.map((position) => (
+                {allPositionData?.data?.map((position) => (
+                  <PositionItem
+                    id={position.id}
+                    key={position.id}
+                    positionImage={position.positionImage}
+                    companyName={position.companyName}
+                    positionTitle={position.positionTitle}
+                    positionSkilled={position.positionSkilled}
+                    positionRegion={position.positionRegion}
+                  />
+                ))}
+              </CompanyInfoGrid>
+            ) : (
+              <CompanyInfoMobile>
+                {allPositionData?.data?.map((position) => (
+                  <PositionHomeMobile
+                    id={position.id}
+                    key={position.id}
+                    positionImage={position.positionImage}
+                    companyName={position.company.companyName}
+                    positionTitle={position.positionTitle}
+                    positionSkilled={position.skilled}
+                    positionRegion={position.region}
+                  />
+                ))}
+                {/* {allPositionData?.data?.map((position) => (
                   <PositionItem
                     id={position.id}
                     key={position.id}
@@ -66,7 +99,7 @@ function Home() {
               </CompanyInfoGrid>
             ) : (
               <CompanyInfoMobile>
-                {allPositionData?.data.map((position) => (
+                {allPositionData?.data?.map((position) => (
                   <PositionHomeMobile
                     id={position.id}
                     key={position.id}
@@ -76,11 +109,15 @@ function Home() {
                     positionSkilled={position.skilled}
                     positionRegion={position.region}
                   />
-                ))}
+                ))} */}
               </CompanyInfoMobile>
             )}
           </>
         )}
+
+        {allPositionData?.data?.length === 0 ? (
+          <ApplyPositionNoData>데이터가 존재하지 않습니다.</ApplyPositionNoData>
+        ) : null}
       </MainCompanyInfoContainer>
     </HomeContainer>
   );
