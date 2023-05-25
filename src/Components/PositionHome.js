@@ -9,10 +9,17 @@ const CompanyInfoDetailImgNO = styled.div`
   transition: opacity 0.1s linear;
 `;
 
+const CompanyInfoDetailImgNoDiv = styled.div`
+  font-size: 200px;
+  font-weight: 400;
+  text-align: center;
+`;
+
 const CompanyInfoDetailImgOK = styled.img`
   width: 100%;
   height: 250px;
   border-radius: 10px;
+  border: 1px solid #ddd;
   transition: opacity 0.1s linear;
 `;
 
@@ -72,7 +79,11 @@ function PositionHomeMobile({
         {positionImage ? (
           <CompanyInfoDetailImgOK src={positionImage} />
         ) : (
-          <CompanyInfoDetailImgNO />
+          <CompanyInfoDetailImgNO>
+            <CompanyInfoDetailImgNoDiv>
+              {positionTitle.slice(0, 1)}
+            </CompanyInfoDetailImgNoDiv>
+          </CompanyInfoDetailImgNO>
         )}
 
         <CompanyInfoDetailContainer>

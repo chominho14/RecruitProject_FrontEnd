@@ -10,6 +10,40 @@ import styled from "styled-components";
 import { resizeState } from "../../atom";
 import { BiSearchAlt2 } from "react-icons/bi";
 
+// ------------------ 뒤로가기 ----------------
+
+const BackDiv = styled.div`
+  position: absolute;
+  top: 40px;
+  left: 35px;
+  width: 100%;
+`;
+
+const BackHr = styled.hr`
+  margin-left: 0px;
+  margin-right: 15%;
+  border: 1px solid #ddd;
+`;
+
+const BackBtn = styled.button`
+  color: black;
+  border: none;
+  font-size: 18px;
+  line-height: 20px;
+  font-weight: 500;
+  width: 30px;
+  height: 20px;
+  cursor: pointer;
+  background-color: white;
+  border-color: #d9e1e8;
+  border-radius: 8px;
+  &:hover {
+    background-color: whitesmoke;
+  }
+`;
+
+// ------------------ upload -----------------
+
 const UploadContainer = styled.div`
   width: 100%;
   padding-bottom: 120px;
@@ -204,7 +238,7 @@ const SkillSearchLi = styled.li`
 const SkillListListBtn = styled.button`
   border-radius: 8px;
   color: black;
-  border-color: ${({ check }) => (check ? "#76b4e0" : "#d9e1e8")};
+  border-color: ${({ check }) => (check ? "#76b4e0" : "whitesmoke")};
   &:hover {
     letter-spacing: 1px;
     opacity: 0.8;
@@ -232,6 +266,7 @@ const SkillSearchInput = styled.input`
   border-width: 2px;
   border-color: rgba(139, 134, 135, 0.3);
   border-radius: 0.375rem;
+  z-index: 0;
   &::placeholder {
     font-size: medium;
     color: rgba(139, 134, 135, 0.5);
@@ -336,6 +371,25 @@ function Upload() {
         .then((res) => {
           setData(res.data);
         });
+    } else {
+      const formData = new FormData();
+      const positionDto = {
+        title,
+        salary,
+        endDay,
+        introduction,
+        region,
+        skill,
+        field,
+      };
+      formData.append("stringPositionDto", JSON.stringify(positionDto));
+      axios
+        .post("http://localhost:8080/api/company/upload", formData, {
+          headers: { Authorization: localStorage.getItem("userData") },
+        })
+        .then((res) => {
+          setData(res.data);
+        });
     }
   };
 
@@ -383,24 +437,28 @@ function Upload() {
     );
   };
 
+  // 뒤로가기
+  const navagate = useNavigate();
+  const handleGoback = () => {
+    navagate(-1);
+  };
+
   return (
     <UploadContainer>
       <UploadMobileSizeBackBtnContainer>
         {large === "Mobile" ? (
-          <>
-            <button>
+          <BackDiv>
+            <BackBtn onClick={handleGoback}>
               <IoIosArrowBack />
-            </button>
-            <hr />
-          </>
+            </BackBtn>
+            <BackHr />
+          </BackDiv>
         ) : null}
       </UploadMobileSizeBackBtnContainer>
       <div>
         <SkillListContainer>
           <UploadFormDiv>
-            <UploadFormLabel>
-              기술 스택 <span style={{ color: "#ff7f00" }}>*</span>
-            </UploadFormLabel>
+            <UploadFormLabel>기술 스택</UploadFormLabel>
           </UploadFormDiv>
           <UploadFormDiv>
             <div>
@@ -450,9 +508,7 @@ function Upload() {
         </SkillListContainer>
         <UploadMainForm onSubmit={handleSubmit(onValid)}>
           <UploadFormDiv>
-            <UploadFormImageLabel>
-              사진 첨부 <span style={{ color: "#ff7f00" }}>*</span>
-            </UploadFormImageLabel>
+            <UploadFormImageLabel>사진 첨부</UploadFormImageLabel>
           </UploadFormDiv>
 
           <UploadFormImgDiv>
@@ -462,7 +518,6 @@ function Upload() {
                 <UploadInput
                   {...register("photo")}
                   type="file"
-                  multiple
                   accept="image/*"
                   style={{ display: "none" }}
                 />

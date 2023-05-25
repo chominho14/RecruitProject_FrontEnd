@@ -10,6 +10,7 @@ import Loading from "../../Components/Loading";
 import useUser from "../../Libs/useUser";
 import useMuatationH from "../../Libs/useMutationH";
 import useMutations from "../../Libs/useMutations";
+import axios from "axios";
 
 const PositionContainer = styled.div`
   width: 85%;
@@ -67,6 +68,11 @@ const PoositionTopPositionTitleDiv = styled.div`
   font-weight: 500;
   margin-top: 10px;
   margin-bottom: 10px;
+`;
+
+const PositionTopPositionTitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 // ------------------웹 화면 -------------------------
@@ -355,6 +361,25 @@ const PositionMobileApplyCompleteBtn = styled.div`
   background-color: #d9e1e8;
 `;
 
+// position 삭제 버튼
+const PositionDeleteDiv = styled.div`
+  cursor: pointer;
+  width: 55px;
+  height: 35px;
+  padding-top: 10px;
+
+  text-align: center;
+  font-weight: 600;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.5);
+  border-radius: 6px;
+  float: right;
+  background-color: rgba(0, 0, 0, 0.1);
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+`;
+
 function Position() {
   const large = useRecoilValue(resizeState);
 
@@ -424,11 +449,19 @@ function Position() {
     if (userData?.authority !== "ROLE_USER") {
       return alert("일반 유저만 지원할 수 있습니다.");
     }
-    if (positionData?.data3.applyStatus === "APPLY_OK") {
+    if (positionData?.data3?.applyStatus === "APPLY_OK") {
       return alert("지원한 채용공고는 다시 지원이 안 됩니다.");
     }
 
     navigate(`/application/${positionId}`);
+  };
+
+  // 삭제 기능
+  const sessionEmail = localStorage.getItem("userData");
+
+  const onPositionDelete = () => {
+    axios.post(`http://localhost:8080/api/position/delete/${positionId}`);
+    navigate("/");
   };
 
   return (
@@ -449,18 +482,25 @@ function Position() {
             <PositionTopCompanyNameDiv>
               {positionData?.data?.companyName}
             </PositionTopCompanyNameDiv>
-            <PoositionTopPositionTitleDiv>
-              {positionData?.data?.positionTitle}
-            </PoositionTopPositionTitleDiv>
+            <PositionTopPositionTitleContainer>
+              <PoositionTopPositionTitleDiv>
+                {positionData?.data?.positionTitle}
+              </PoositionTopPositionTitleDiv>
+              <div>
+                {positionData?.data?.email === sessionEmail ? (
+                  <PositionDeleteDiv onClick={onPositionDelete}>
+                    삭제
+                  </PositionDeleteDiv>
+                ) : null}
+              </div>
+            </PositionTopPositionTitleContainer>
           </PositionCompanyWithPositionContainer>
           {large === "Web" ? (
             <PositionWebMiddleContainer>
               <PositionWebMiddleLeftContainer>
                 <PositionWebMiddleImgContainer>
                   {positionData?.data?.positionImage === null ? (
-                    <PositionWebMiddleLeftImgNull>
-                      {" "}
-                    </PositionWebMiddleLeftImgNull>
+                    <PositionWebMiddleLeftImgNull></PositionWebMiddleLeftImgNull>
                   ) : (
                     <PositionWebMiddleLeftImg
                       src={positionData?.data?.positionImage}

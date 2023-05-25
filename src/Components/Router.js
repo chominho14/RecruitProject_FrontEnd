@@ -15,6 +15,7 @@ import Resume from "../Routes/Resume/Resume";
 import ErrorComponent from "./ErrorComponent";
 import NotFound from "./NotFound";
 import ApplyListId from "../Routes/Company/ApplyListId";
+import Saves from "../Routes/Profile/Saves";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
             element: <Setting />,
           },
         ],
+      },
+      {
+        path: "profile/saves",
+        element: <Saves />,
       },
       {
         path: "application/:positionId",

@@ -214,16 +214,15 @@ function Header() {
             <Col>
               <Logo />
               <Items>
-                {userData?.authority !== "ROLE_COMPANY" ? (
-                  <Item>
-                    <Link to={"/resume"} onClick={onResumeClick}>
-                      내 이력서
-                      {resumeMatch?.pathname === "/resume" && (
-                        <Circle layoutId="circle" />
-                      )}
-                    </Link>
-                  </Item>
-                ) : (
+                {userData?.authority !== "ROLE_COMPANY" ? // <Item>
+                //   <Link to={"/resume"} onClick={onResumeClick}>
+                //     내 이력서
+                //     {resumeMatch?.pathname === "/resume" && (
+                //       <Circle layoutId="circle" />
+                //     )}
+                //   </Link>
+                // </Item>
+                null : (
                   <>
                     <Item>
                       <Link to={"/company/positionList"}>

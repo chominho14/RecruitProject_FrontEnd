@@ -5,8 +5,8 @@ const CompanyApplyListContainer = styled.div`
   height: 70px;
   border: 1px solid #ddd;
   margin: 10px auto;
-  /* margin-left: auto;
-  margin-right: auto; */
+  margin-left: auto;
+  margin-right: auto;
   border-radius: 8px;
   background-color: rgba(224, 224, 224, 0.5);
   padding: 10px 18px;
@@ -33,7 +33,7 @@ const CompanyApplyListSkillDiv = styled.div`
 function CompanyApplyList({ id, positionName, skill }) {
   return (
     <div>
-      <Link to={`/position/${id}`}>
+      <Link to={`/company/positionList/${id}`}>
         <CompanyApplyListContainer key={id}>
           <CompanyApplyListTitleDiv>{positionName}</CompanyApplyListTitleDiv>
           <CompanyApplyListSkillDiv>{skill}</CompanyApplyListSkillDiv>

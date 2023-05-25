@@ -13,7 +13,14 @@ const CompanyInfoDetailImgOK = styled.img`
   width: 100%;
   height: 150px;
   border-radius: 10px;
+  border: 1px solid #ddd;
   transition: opacity 0.1s linear;
+`;
+
+const CompanyInfoDetailImgNoDiv = styled.div`
+  font-size: 150px;
+  font-weight: 400;
+  text-align: center;
 `;
 
 const CompanyInfoDetail = styled.div`
@@ -69,7 +76,11 @@ function PositionItem({
         {positionImage ? (
           <CompanyInfoDetailImgOK src={positionImage} />
         ) : (
-          <CompanyInfoDetailImgNO />
+          <CompanyInfoDetailImgNO>
+            <CompanyInfoDetailImgNoDiv>
+              {positionTitle.slice(0, 1)}
+            </CompanyInfoDetailImgNoDiv>
+          </CompanyInfoDetailImgNO>
         )}
 
         <CompanyInfoDetailContainer>

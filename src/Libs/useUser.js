@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 
 export default function useUser() {
   const [user, setUser] = useState();
-  //   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {

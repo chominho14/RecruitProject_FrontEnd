@@ -116,13 +116,13 @@ function ApplyListId() {
               지원한 사람들이에요.
             </ApplyTitle>
             <ApplyPositionContainer>
-              {resumeListData?.data.map((resumeData) => (
+              {resumeListData?.data?.map((resumeData) => (
                 <PositionApplyList
                   id={resumeData.id}
                   key={resumeData.id}
-                  resumeName={resumeData.resume}
-                  name={resumeData.member.username}
-                  studentId={resumeData.member.studentId}
+                  resumeName={resumeData.resumeName}
+                  name={resumeData.username}
+                  studentId={resumeData.studentId}
                 />
               ))}
             </ApplyPositionContainer>

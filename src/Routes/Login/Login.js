@@ -216,6 +216,23 @@ function Login() {
             회원가입
           </Link>
         </AnotherPageGoDiv>
+        <AnotherPageGoDiv>
+          <AnotherPageGoSpan>기업회원이신가요?</AnotherPageGoSpan>
+          <Link
+            to={"/company/companyjoin"}
+            style={{
+              backgroundColor: "white",
+              paddingLeft: "0.5rem",
+              paddingRight: "0.5rem",
+              fontSize: "0.875rem",
+              lineHeight: "1.25rem",
+              textDecorationLine: "underline",
+              textUnderlineOffset: "1px",
+            }}
+          >
+            기업회원가입
+          </Link>
+        </AnotherPageGoDiv>
       </AnotherPageContainer>
     </LoginContainer>
   );
