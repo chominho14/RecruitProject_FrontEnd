@@ -83,10 +83,7 @@ const SavesCompanyInfoMobile = styled.div`
 
 function Saves() {
   const large = useRecoilValue(resizeState);
-  const { isLoading, data: savePositionData } = useQuery(
-    ["saveList"],
-    fetchSaveList
-  );
+  const { data: savePositionData } = useQuery(["saveList"], fetchSaveList);
 
   console.log(savePositionData);
 

@@ -399,7 +399,7 @@ function Upload() {
     } else {
       navigate("/company/upload");
     }
-  }, [data]);
+  }, [data, navigate]);
 
   // 사진 첨부 시 사진 보이기
   const photo = watch("photo");

@@ -194,11 +194,11 @@ function Header() {
     };
   });
 
-  const onResumeClick = () => {
-    if (userData?.code === null) {
-      return alert("로그인을 해주세요.");
-    }
-  };
+  // const onResumeClick = () => {
+  //   if (userData?.code === null) {
+  //     return alert("로그인을 해주세요.");
+  //   }
+  // };
 
   // const navigate = useNavigate();
 
@@ -214,9 +214,7 @@ function Header() {
             <Col>
               <Logo />
               <Items>
-                {userData?.authority !== "ROLE_COMPANY" ? // <Item>
-                //   <Link to={"/resume"} onClick={onResumeClick}>
-                //     내 이력서
+                {userData?.authority !== "ROLE_COMPANY" ? //     내 이력서 //   <Link to={"/resume"} onClick={onResumeClick}> // <Item>
                 //     {resumeMatch?.pathname === "/resume" && (
                 //       <Circle layoutId="circle" />
                 //     )}

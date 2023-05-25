@@ -1,11 +1,6 @@
 import styled from "styled-components";
-import CompanyApplyList from "../../Components/CompanyApplyList";
 import { useQuery } from "@tanstack/react-query";
-import {
-  fetchPositionDetail,
-  fetchPositionList,
-  fetchResumeList,
-} from "../../Libs/api";
+import { fetchPositionDetail, fetchResumeList } from "../../Libs/api";
 import { useRecoilValue } from "recoil";
 import { resizeState } from "../../atom";
 import { useNavigate } from "react-router-dom";

@@ -295,7 +295,7 @@ function Application() {
     } else {
       navigate(`/application/${positionId}`);
     }
-  }, [data]);
+  }, [data, navigate, positionId]);
 
   // 뒤로가기
   const large = useRecoilValue(resizeState);
