@@ -279,8 +279,15 @@ function Application() {
 
       formData.append("file", resume[0]);
 
+      // axios
+      //   .post(`http://localhost:8080/api/application/${positionId}`, formData, {
+      //     headers: { Authorization: localStorage.getItem("userData") },
+      //   })
+      //   .then((res) => {
+      //     setData(res.data);
+      //   });
       axios
-        .post(`http://localhost:8080/api/application/${positionId}`, formData, {
+        .post(process.env.DIS_URL + `/application/${positionId}`, formData, {
           headers: { Authorization: localStorage.getItem("userData") },
         })
         .then((res) => {
