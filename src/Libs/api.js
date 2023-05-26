@@ -1,6 +1,8 @@
 // 유저 데이터 가져오기
 export async function fetchUsers() {
-  return fetch("http://localhost:8080/api/users").then((res) => res.json());
+  return fetch(process.env.REACT_APP_API_URL + "/api/users").then((res) =>
+    res.json()
+  );
 }
 
 // 홈화면 채용공고들 데이터 가져오기
