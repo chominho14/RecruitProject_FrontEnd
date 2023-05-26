@@ -5,7 +5,7 @@ export async function fetchUsers() {
 
 // 홈화면 채용공고들 데이터 가져오기
 export async function fetchHomePositions() {
-  return fetch("http://localhost:8080/api/home").then((res) => res.json());
+  return fetch("13.209.26.207:8080/api/home").then((res) => res.json());
 }
 
 // 채용공고 상세 페이지 데이터 가져오기
