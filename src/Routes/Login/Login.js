@@ -150,10 +150,8 @@ function Login() {
   const onValid = (data) => {
     if (loading) return;
     login({ ...data });
-    console.log(data);
   };
 
-  console.log(data);
   useEffect(() => {
     if (data?.code === "ok") {
       localStorage.setItem("userData", data.email);

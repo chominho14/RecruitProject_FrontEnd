@@ -151,7 +151,6 @@ function CompanyJoin() {
     if (loading) return;
     join({ ...data });
   };
-  console.log(data);
   useEffect(() => {
     if (data?.code === "ok") {
       navigate("/profile");

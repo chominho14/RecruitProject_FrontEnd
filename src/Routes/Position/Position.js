@@ -393,8 +393,6 @@ function Position() {
     fetchPositionDetail(positionId)
   );
 
-  console.log(positionData);
-
   // 뒤로가기
   const navigate = useNavigate();
   const handleGoback = () => {

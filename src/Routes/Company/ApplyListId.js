@@ -73,7 +73,6 @@ function ApplyListId() {
     ["alllResume", positionId],
     () => fetchResumeList(positionId)
   );
-  console.log(resumeListData);
 
   // 채용 정보 가져오기
 
@@ -81,8 +80,6 @@ function ApplyListId() {
     ["companyData", positionId],
     () => fetchPositionDetail(positionId)
   );
-
-  console.log(companyData);
 
   // 뒤로가기
   const navagate = useNavigate();

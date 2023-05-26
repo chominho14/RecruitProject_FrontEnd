@@ -265,7 +265,6 @@ function Application() {
   const onCheckPrivacy = () => {
     setPrivacyCheck((prev) => !prev);
   };
-  console.log(privacyCheck);
 
   // 지원 버튼 클릭시
   const { positionId } = useParams();

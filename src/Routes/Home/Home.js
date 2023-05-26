@@ -49,8 +49,6 @@ function Home() {
     fetchHomePositions
   );
 
-  console.log(allPositionData);
-
   return (
     <HomeContainer>
       <MainCompanyInfoContainer>

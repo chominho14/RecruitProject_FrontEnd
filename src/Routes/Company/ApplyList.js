@@ -87,8 +87,6 @@ function ApplyList() {
     navagate(-1);
   };
 
-  console.log(positionListData);
-
   return (
     <>
       {isLoading ? (

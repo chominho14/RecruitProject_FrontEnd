@@ -85,8 +85,6 @@ function Saves() {
   const large = useRecoilValue(resizeState);
   const { data: savePositionData } = useQuery(["saveList"], fetchSaveList);
 
-  console.log(savePositionData);
-
   const isLoadings = false;
 
   // 뒤로가기

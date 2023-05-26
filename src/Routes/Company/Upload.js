@@ -311,7 +311,6 @@ function Upload() {
 
   const handleRegionSelect = (e) => {
     setRegionSelected(e.target.value);
-    console.log(e.target.value);
   };
 
   const handleFieldSelect = (e) => {
