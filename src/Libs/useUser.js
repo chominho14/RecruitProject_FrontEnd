@@ -16,7 +16,7 @@ import { useLocation } from "react-router-dom";
 //       .then((res) => res.json())
 //       .then((data) => {
 //         setUser(data);
-//         console.log(data);
+
 //       });
 //   }, [location]);
 
@@ -38,7 +38,6 @@ export default function useUser() {
       .then((res) => res.json())
       .then((data) => {
         setUser(data);
-        console.log(data);
       });
   }, [location]);
 
