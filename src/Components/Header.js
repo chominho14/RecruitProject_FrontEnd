@@ -164,7 +164,7 @@ const MobileSpan = styled.span`
 `;
 
 function Header() {
-  const resumeMatch = useMatch("/resume");
+  // const resumeMatch = useMatch("/resume");
   const homeMatch = useMatch("/");
   const profileMatch = useMatch("/profile");
   const loginMatch = useMatch("/login");
@@ -214,13 +214,7 @@ function Header() {
             <Col>
               <Logo />
               <Items>
-                {userData?.authority !== "ROLE_COMPANY" ? //     내 이력서 //   <Link to={"/resume"} onClick={onResumeClick}> // <Item>
-                //     {resumeMatch?.pathname === "/resume" && (
-                //       <Circle layoutId="circle" />
-                //     )}
-                //   </Link>
-                // </Item>
-                null : (
+                {userData?.authority !== "ROLE_COMPANY" ? null : ( // </Item> //   </Link> //     )} //       <Circle layoutId="circle" /> //     {resumeMatch?.pathname === "/resume" && ( //     내 이력서 //   <Link to={"/resume"} onClick={onResumeClick}> // <Item>
                   <>
                     <Item>
                       <Link to={"/company/positionList"}>
@@ -296,7 +290,7 @@ function Header() {
                   <MobileSpan>홈</MobileSpan>
                 </MobileItemHome>
               </Link>
-
+              {/* 
               <Link to={"/resume"}>
                 <MobileItemResume
                   resumeMatch={
@@ -306,7 +300,7 @@ function Header() {
                   <HiOutlineDocumentText />
                   <MobileSpan>내이력서</MobileSpan>
                 </MobileItemResume>
-              </Link>
+              </Link> */}
 
               {/* <Link to={"/"}>
                 <MobileItemHome

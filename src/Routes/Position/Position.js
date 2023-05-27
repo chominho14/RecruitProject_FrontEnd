@@ -425,7 +425,8 @@ function Position() {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation(
-    useMutations(`http://localhost:8080/api/position/${positionId}`),
+    // useMutations(`http://localhost:8080/api/position/${positionId}`),
+    useMutations(process.env.REACT_APP_API_URL + `/position/${positionId}`),
     {
       onMutate: async (newData) => {
         await queryClient.cancelQueries(["positionData", positionId]);
@@ -458,8 +459,10 @@ function Position() {
   const sessionEmail = localStorage.getItem("userData");
 
   const onPositionDelete = () => {
-    axios.post(`http://localhost:8080/api/position/delete/${positionId}`);
-    // axios.post(process.env.DIS_URL + `/position/delete/${positionId}`);
+    // axios.post(`http://localhost:8080/api/position/delete/${positionId}`);
+    axios.post(
+      process.env.REACT_APP_API_URL + `/position/delete/${positionId}`
+    );
     navigate("/");
   };
 
