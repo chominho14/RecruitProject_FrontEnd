@@ -77,10 +77,10 @@ function Home() {
                     id={position.id}
                     key={position.id}
                     positionImage={position.positionImage}
-                    companyName={position.company.companyName}
+                    companyName={position.companyName}
                     positionTitle={position.positionTitle}
-                    positionSkilled={position.skilled}
-                    positionRegion={position.region}
+                    positionSkilled={position.positionSkilled}
+                    positionRegion={position.positionRegion}
                   />
                 ))}
                 {/* {allPositionData?.data?.map((position) => (
