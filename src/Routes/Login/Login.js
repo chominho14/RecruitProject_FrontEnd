@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useMutations from "../../Libs/useMutations";
+import { useRecoilValue } from "recoil";
+import { resizeState } from "../../atom";
 
 const LoginContainer = styled.div`
   margin-top: 30px;
@@ -93,6 +95,27 @@ const LoginBtn = styled.button`
   }
 `;
 
+const LoginMobileBtn = styled.button`
+  color: white;
+  margin-top: 32px;
+  border: 1px;
+  border-color: transparent;
+  border-radius: 0.375rem;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  width: 60%;
+  max-width: 400px;
+  padding: 12px;
+  cursor: pointer;
+  background-color: rgba(43, 144, 217, 1);
+  &:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    border-width: 2px;
+  }
+`;
+
 const AnotherPageContainer = styled.div`
   margin-top: 32px;
 `;
@@ -146,13 +169,20 @@ function Login() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const [login, { loading, data }] = useMutations("/login");
+  const large = useRecoilValue(resizeState);
 
   const onValid = (data) => {
     if (loading) return;
     login({ ...data });
   };
 
+  const loginExist = localStorage.getItem("userData");
+
   useEffect(() => {
+    if (loginExist) {
+      alert("이미 로그인 되어있습니다.");
+      return navigate("/");
+    }
     if (data?.code === "ok") {
       localStorage.setItem("userData", data.email);
       localStorage.setItem("userRoles", data.authority);
@@ -160,8 +190,7 @@ function Login() {
     } else {
       navigate("/login");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  }, [data, loginExist, navigate]);
 
   return (
     <LoginContainer>
@@ -187,7 +216,11 @@ function Login() {
           type="password"
           placeholder="비밀번호"
         />
-        <LoginBtn>{loading ? "로딩 중..." : "로그인"}</LoginBtn>
+        {large === "Mobile" ? (
+          <LoginMobileBtn>{loading ? "로딩 중..." : "로그인"}</LoginMobileBtn>
+        ) : (
+          <LoginBtn>{loading ? "로딩 중..." : "로그인"}</LoginBtn>
+        )}
       </LoginMainForm>
       <AnotherPageContainer>
         <AnotherPageSubContainer>

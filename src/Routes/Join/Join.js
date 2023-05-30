@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useMutations from "../../Libs/useMutations";
+import { resizeState } from "../../atom";
+import { useRecoilValue } from "recoil";
 
 const JoinContainer = styled.div`
   margin-top: 30px;
@@ -94,6 +96,28 @@ const JoinBtn = styled.button`
   }
 `;
 
+const JoinMobileBtn = styled.button`
+  color: white;
+  margin-top: 32px;
+  border: 1px;
+  border-color: transparent;
+  border-radius: 0.375rem;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  width: 60%;
+  max-width: 400px;
+  padding: 12px;
+  cursor: pointer;
+  background-color: rgba(43, 144, 217, 1);
+
+  &:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    border-width: 2px;
+  }
+`;
+
 const AnotherPageContainer = styled.div`
   margin-top: 32px;
 `;
@@ -147,19 +171,25 @@ function Join() {
   const { register, handleSubmit } = useForm();
   const [join, { loading, data }] = useMutations("/join");
   const navigate = useNavigate();
+  const large = useRecoilValue(resizeState);
   const onValid = (data) => {
     if (loading) return;
     join({ ...data });
   };
 
+  const loginExist = localStorage.getItem("userData");
+
   useEffect(() => {
+    if (loginExist) {
+      alert("이미 로그인 되어있습니다.");
+      return navigate("/");
+    }
     if (data?.code === "ok") {
       navigate("/profile");
     } else {
       navigate("/join");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  }, [data, loginExist, navigate]);
 
   return (
     <JoinContainer>
@@ -206,7 +236,11 @@ function Join() {
           type="password"
           placeholder="비밀번호 확인"
         />
-        <JoinBtn>{loading ? "로딩 중..." : "회원가입"}</JoinBtn>
+        {large === "Mobile" ? (
+          <JoinMobileBtn>{loading ? "로딩 중..." : "회원가입"}</JoinMobileBtn>
+        ) : (
+          <JoinBtn>{loading ? "로딩 중..." : "회원가입"}</JoinBtn>
+        )}
       </JoinMainForm>
       <AnotherPageContainer>
         <AnotherPageSubContainer>

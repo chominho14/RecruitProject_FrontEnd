@@ -95,6 +95,25 @@ const Mobile = styled.nav`
   justify-content: space-between;
   font-size: 0.75rem;
   line-height: 1rem;
+
+  z-index: 1;
+`;
+
+const MobileBasicUser = styled.nav`
+  background-color: white;
+  color: gray;
+  border-top-width: 1px;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  padding-left: 5.5rem;
+  padding-right: 5.5rem;
+  padding-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  line-height: 1rem;
+
   z-index: 1;
 `;
 
@@ -110,17 +129,17 @@ const MobileItemHome = styled.a`
   }
 `;
 
-const MobileItemResume = styled.a`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 20px;
-  color: ${(props) => (props.resumeMatch ? "#2b90d9" : "gray")};
-  font-size: large;
-  :hover {
-    color: #2b90d9;
-  }
-`;
+// const MobileItemResume = styled.a`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   margin: 20px;
+//   color: ${(props) => (props.resumeMatch ? "#2b90d9" : "gray")};
+//   font-size: large;
+//   :hover {
+//     color: #2b90d9;
+//   }
+// `;
 
 const MobileItemCompanyApp = styled.a`
   display: flex;
@@ -162,6 +181,8 @@ const MobileSpan = styled.span`
   font-size: small;
   padding-top: 5px;
 `;
+
+// --------------- 푸터 ---------------
 
 function Header() {
   // const resumeMatch = useMatch("/resume");
@@ -281,7 +302,7 @@ function Header() {
         <>
           <Hr />
           {userData?.authority !== "ROLE_COMPANY" ? (
-            <Mobile>
+            <MobileBasicUser>
               <Link to={"/"}>
                 <MobileItemHome
                   homeMatch={homeMatch?.pathname === "/" ? true : false}
@@ -322,7 +343,7 @@ function Header() {
                   <MobileSpan>프로필</MobileSpan>
                 </MobileItemProfile>
               </Link>
-            </Mobile>
+            </MobileBasicUser>
           ) : (
             <Mobile>
               <Link to={"/"}>

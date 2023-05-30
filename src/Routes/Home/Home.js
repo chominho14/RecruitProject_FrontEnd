@@ -41,6 +41,30 @@ const ApplyPositionNoData = styled.div`
   color: rgba(0, 0, 0, 0.5);
 `;
 
+const HomeFotterContainer = styled.footer`
+  width: 100%;
+  height: 100px;
+  bottom: 0px;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding-top: 20px;
+  color: rgba(0, 0, 0, 0.3);
+  font-weight: 400;
+`;
+
+const HomeMobileFotterContainer = styled.footer`
+  width: 100%;
+  height: 150px;
+  bottom: 0px;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding-top: 20px;
+  color: rgba(0, 0, 0, 0.3);
+  font-weight: 400;
+`;
+
 function Home() {
   const large = useRecoilValue(resizeState);
 
@@ -50,74 +74,85 @@ function Home() {
   );
 
   return (
-    <HomeContainer>
-      <MainCompanyInfoContainer>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <>
-            {large === "Web" ? (
-              <CompanyInfoGrid>
-                {allPositionData?.data?.map((position) => (
-                  <PositionItem
-                    id={position.id}
-                    key={position.id}
-                    positionImage={position.positionImage}
-                    companyName={position.companyName}
-                    positionTitle={position.positionTitle}
-                    positionSkilled={position.positionSkilled}
-                    positionRegion={position.positionRegion}
-                  />
-                ))}
-              </CompanyInfoGrid>
-            ) : (
-              <CompanyInfoMobile>
-                {allPositionData?.data?.map((position) => (
-                  <PositionHomeMobile
-                    id={position.id}
-                    key={position.id}
-                    positionImage={position.positionImage}
-                    companyName={position.companyName}
-                    positionTitle={position.positionTitle}
-                    positionSkilled={position.positionSkilled}
-                    positionRegion={position.positionRegion}
-                  />
-                ))}
-                {/* {allPositionData?.data?.map((position) => (
-                  <PositionItem
-                    id={position.id}
-                    key={position.id}
-                    positionImage={position.positionImage}
-                    companyName={position.company.companyName}
-                    positionTitle={position.positionTitle}
-                    positionSkilled={position.skilled}
-                    positionRegion={position.region}
-                  />
-                ))}
-              </CompanyInfoGrid>
-            ) : (
-              <CompanyInfoMobile>
-                {allPositionData?.data?.map((position) => (
-                  <PositionHomeMobile
-                    id={position.id}
-                    key={position.id}
-                    positionImage={position.positionImage}
-                    companyName={position.company.companyName}
-                    positionTitle={position.positionTitle}
-                    positionSkilled={position.skilled}
-                    positionRegion={position.region}
-                  />
-                ))} */}
-              </CompanyInfoMobile>
-            )}
-          </>
-        )}
+    <>
+      <HomeContainer>
+        <MainCompanyInfoContainer>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <>
+              {large === "Web" ? (
+                <CompanyInfoGrid>
+                  {allPositionData?.data?.map((position) => (
+                    <PositionItem
+                      id={position.id}
+                      key={position.id}
+                      positionImage={position.positionImage}
+                      companyName={position.companyName}
+                      positionTitle={position.positionTitle}
+                      positionSkilled={position.positionSkilled}
+                      positionRegion={position.positionRegion}
+                    />
+                  ))}
+                </CompanyInfoGrid>
+              ) : (
+                <CompanyInfoMobile>
+                  {allPositionData?.data?.map((position) => (
+                    <PositionHomeMobile
+                      id={position.id}
+                      key={position.id}
+                      positionImage={position.positionImage}
+                      companyName={position.companyName}
+                      positionTitle={position.positionTitle}
+                      positionSkilled={position.positionSkilled}
+                      positionRegion={position.positionRegion}
+                    />
+                  ))}
+                  {/* {allPositionData?.data?.map((position) => (
+                <PositionItem
+                  id={position.id}
+                  key={position.id}
+                  positionImage={position.positionImage}
+                  companyName={position.company.companyName}
+                  positionTitle={position.positionTitle}
+                  positionSkilled={position.skilled}
+                  positionRegion={position.region}
+                />
+              ))}
+            </CompanyInfoGrid>
+          ) : (
+            <CompanyInfoMobile>
+              {allPositionData?.data?.map((position) => (
+                <PositionHomeMobile
+                  id={position.id}
+                  key={position.id}
+                  positionImage={position.positionImage}
+                  companyName={position.company.companyName}
+                  positionTitle={position.positionTitle}
+                  positionSkilled={position.skilled}
+                  positionRegion={position.region}
+                />
+              ))} */}
+                </CompanyInfoMobile>
+              )}
+            </>
+          )}
 
-        {allPositionData?.data?.length === 0 ? (
-          <ApplyPositionNoData>데이터가 존재하지 않습니다.</ApplyPositionNoData>
-        ) : null}
-      </MainCompanyInfoContainer>
-    </HomeContainer>
+          {allPositionData?.data?.length === 0 ? (
+            <ApplyPositionNoData>
+              데이터가 존재하지 않습니다.
+            </ApplyPositionNoData>
+          ) : null}
+        </MainCompanyInfoContainer>
+      </HomeContainer>
+      {large === "Mobile" ? (
+        <HomeMobileFotterContainer>
+          ©202347024. Chominho.
+        </HomeMobileFotterContainer>
+      ) : (
+        <HomeFotterContainer>©202347024. Chominho.</HomeFotterContainer>
+      )}
+    </>
   );
 }
 

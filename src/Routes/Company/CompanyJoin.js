@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useMutations from "../../Libs/useMutations";
+import { resizeState } from "../../atom";
+import { useRecoilValue } from "recoil";
 
 const CompanyJoinContainer = styled.div`
   margin-top: 50px;
@@ -94,6 +96,28 @@ const CompanyJoinBtn = styled.button`
   }
 `;
 
+const CompanyMobileJoinBtn = styled.button`
+  color: white;
+  margin-top: 32px;
+  border: 1px;
+  border-color: transparent;
+  border-radius: 0.375rem;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  width: 60%;
+  max-width: 400px;
+  padding: 12px;
+  cursor: pointer;
+  background-color: rgba(43, 144, 217, 1);
+
+  &:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    border-width: 2px;
+  }
+`;
+
 const CompanyAnotherPageContainer = styled.div`
   margin-top: 32px;
 `;
@@ -147,18 +171,24 @@ function CompanyJoin() {
   const { register, handleSubmit } = useForm();
   const [join, { loading, data }] = useMutations("/company/companyjoin");
   const navigate = useNavigate();
+  const large = useRecoilValue(resizeState);
+
   const onValid = (data) => {
     if (loading) return;
     join({ ...data });
   };
+  const loginExist = localStorage.getItem("userData");
   useEffect(() => {
+    if (loginExist) {
+      alert("이미 로그인 되어있습니다.");
+      return navigate("/");
+    }
     if (data?.code === "ok") {
       navigate("/profile");
     } else {
       navigate("/company/companyjoin");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  }, [data, loginExist, navigate]);
 
   return (
     <CompanyJoinContainer>
@@ -245,7 +275,13 @@ function CompanyJoin() {
           placeholder="기업 분야"
         />
 
-        <CompanyJoinBtn>{loading ? "로딩 중..." : "회원가입"}</CompanyJoinBtn>
+        {large === "Mobile" ? (
+          <CompanyMobileJoinBtn>
+            {loading ? "로딩 중..." : "회원가입"}
+          </CompanyMobileJoinBtn>
+        ) : (
+          <CompanyJoinBtn>{loading ? "로딩 중..." : "회원가입"}</CompanyJoinBtn>
+        )}
       </CompanyJoinMainForm>
       <CompanyAnotherPageContainer>
         <CompanyAnotherPageSubContainer>

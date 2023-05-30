@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchPositionDetail, fetchResumeList } from "../../Libs/api";
 import { useRecoilValue } from "recoil";
 import { resizeState } from "../../atom";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 import Loading from "../../Components/Loading";
 import { useParams } from "react-router-dom";
@@ -86,6 +86,13 @@ function ApplyListId() {
   const handleGoback = () => {
     navagate(-1);
   };
+
+  const loginExists = localStorage.getItem("userRoles");
+
+  if (!loginExists || loginExists === "ROLE_USER") {
+    alert("기업회원만 접근 가능합니다.");
+    return navagate("/");
+  }
 
   return (
     <>

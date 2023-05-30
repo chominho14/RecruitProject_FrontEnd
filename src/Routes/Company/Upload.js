@@ -291,6 +291,27 @@ const SkillSearchIcon = styled.span`
   opacity: 0.5;
 `;
 
+const UploadMobileBtn = styled.button`
+  color: white;
+  margin-top: 32px;
+  border: 1px;
+  border-color: transparent;
+  border-radius: 0.375rem;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  width: 100%;
+  padding: 12px;
+  cursor: pointer;
+  background-color: rgba(43, 144, 217, 1);
+
+  &:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    border-width: 2px;
+  }
+`;
+
 function Upload() {
   const RegionSelected = ["SEOUL", "INCHEON", "GYEONGGI"];
 
@@ -406,13 +427,19 @@ function Upload() {
     }
   };
 
+  const loginExists = localStorage.getItem("userRoles");
+
   useEffect(() => {
+    if (!loginExists || loginExists === "ROLE_USER") {
+      alert("기업회원만 접근 가능합니다.");
+      return navigate("/");
+    }
     if (data?.code === "ok") {
       navigate("/");
     } else {
       navigate("/company/upload");
     }
-  }, [data, navigate]);
+  }, [data, loginExists, navigate]);
 
   // 사진 첨부 시 사진 보이기
   const photo = watch("photo");
@@ -626,7 +653,11 @@ function Upload() {
             </div>
           </UploadFormDiv>
           <UploadFormDiv>
-            <UploadBtn>{"업로드"}</UploadBtn>
+            {large === "Mobile" ? (
+              <UploadMobileBtn>{"업로드"}</UploadMobileBtn>
+            ) : (
+              <UploadBtn>{"업로드"}</UploadBtn>
+            )}
           </UploadFormDiv>
         </UploadMainForm>
       </div>

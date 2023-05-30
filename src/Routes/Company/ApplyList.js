@@ -82,10 +82,17 @@ function ApplyList() {
   );
 
   // 뒤로가기
-  const navagate = useNavigate();
+  const navigate = useNavigate();
   const handleGoback = () => {
-    navagate(-1);
+    navigate(-1);
   };
+
+  const loginExists = localStorage.getItem("userRoles");
+
+  if (!loginExists || loginExists === "ROLE_USER") {
+    alert("기업회원만 접근 가능합니다.");
+    return navigate("/");
+  }
 
   return (
     <>
