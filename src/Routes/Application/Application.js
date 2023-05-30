@@ -243,6 +243,13 @@ const ResumePrivacySubmitDiv = styled.div`
   }
 `;
 
+const ResumePrivacyMobileSubContainer = styled.div`
+  display: flex;
+  font-weight: 500;
+  font-size: 10px;
+  margin-top: 3px;
+`;
+
 function Application() {
   const navigate = useNavigate();
   // form 백엔드 데이터 전송
@@ -378,14 +385,25 @@ function Application() {
               checked={privacyCheck}
               onChange={onCheckPrivacy}
             ></input>
-            <ResumePrivacySubContainer>
-              &nbsp;채용 전형 진행을 위해 &nbsp;
-              <ResumePrivacySubmitDiv onClick={showModal}>
-                개인정보 제3자 제공
-              </ResumePrivacySubmitDiv>
-              에 동의합니다.
-              <div style={{ color: "gray" }}>&nbsp;(필수)</div>
-            </ResumePrivacySubContainer>
+            {large === "Mobile" ? (
+              <ResumePrivacyMobileSubContainer>
+                &nbsp;채용 전형 진행을 위해 &nbsp;
+                <ResumePrivacySubmitDiv onClick={showModal}>
+                  개인정보 제3자 제공
+                </ResumePrivacySubmitDiv>
+                에 동의합니다.
+                <div style={{ color: "gray" }}>&nbsp;(필수)</div>
+              </ResumePrivacyMobileSubContainer>
+            ) : (
+              <ResumePrivacySubContainer>
+                &nbsp;채용 전형 진행을 위해 &nbsp;
+                <ResumePrivacySubmitDiv onClick={showModal}>
+                  개인정보 제3자 제공
+                </ResumePrivacySubmitDiv>
+                에 동의합니다.
+                <div style={{ color: "gray" }}>&nbsp;(필수)</div>
+              </ResumePrivacySubContainer>
+            )}
           </ResumePrivacyContainer>
 
           <ApplyBtnDiv>
