@@ -215,6 +215,8 @@ function Header() {
     };
   });
 
+  const loginExists = localStorage.getItem("userData");
+
   // const onResumeClick = () => {
   //   if (userData?.code === null) {
   //     return alert("로그인을 해주세요.");

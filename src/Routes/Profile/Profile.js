@@ -3,6 +3,7 @@ import styled from "styled-components";
 import useUser from "../../Libs/useUser";
 import { useRecoilValue } from "recoil";
 import { resizeState } from "../../atom";
+import { useEffect } from "react";
 
 const ProfileContainer = styled.div`
   margin-top: 30px;
@@ -117,6 +118,8 @@ function Profile() {
   const user = useUser();
   const large = useRecoilValue(resizeState);
 
+  const loginExists = localStorage.getItem("userRoles");
+
   const handleLogout = () => {
     localStorage.removeItem("userData");
     localStorage.removeItem("userRoles");
@@ -125,6 +128,12 @@ function Profile() {
   if (user?.email == null) {
     navigate("/login");
   }
+
+  useEffect(() => {
+    if (!loginExists) {
+      return navigate("/login");
+    }
+  }, [loginExists, navigate]);
 
   const handleToSaves = () => {
     navigate("/profile/saves");
