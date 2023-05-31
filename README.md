@@ -2,6 +2,12 @@
 
 ---
 
+## 배포
+
+- URL : http://ec2-13-209-26-207.ap-northeast-2.compute.amazonaws.com/
+
+---
+
 ## FrontEnd
 
 - Notion. https://gleaming-garlic-1d6.notion.site/Recruit-WebSite-Project-9eca5e3a2983469bb453096a54654f30
@@ -33,5 +39,11 @@ ReactJS, Styled-Component, React-Query, Recoil
 <img width="639" alt="스크린샷 2023-05-21 오후 3 18 51" src="https://github.com/chominho14/RecruitProject_FrontEnd/assets/62542933/669b5921-5052-4b11-9dad-5e84bef28b05">
 
 <img width="437" alt="스크린샷 2023-05-21 오후 3 19 00" src="https://github.com/chominho14/RecruitProject_FrontEnd/assets/62542933/fdea47bc-5eb4-4d0f-b147-4244cbb12818">
+
+---
+
+### ✅ 배포 과정 (방법 & 에러사항)
+
+- Notion. https://gleaming-garlic-1d6.notion.site/0d51fc22500f4e108763c411783b9e66
 
 ---
