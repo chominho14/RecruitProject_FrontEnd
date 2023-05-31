@@ -82,6 +82,7 @@ const router = createBrowserRouter([
         element: <ApplyListId />,
       },
     ],
+
     errorElement: <NotFound />,
   },
 ]);

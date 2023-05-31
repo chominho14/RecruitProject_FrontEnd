@@ -136,6 +136,7 @@ const PositionWebMiddleLeftRegion = styled.div`
   width: 95%;
   font-size: large;
   font-weight: 400;
+  margin-bottom: 10px;
 `;
 
 const PositionWebMiddleLeftAddress = styled.div`
@@ -333,10 +334,7 @@ const PositionMobileApplyBtn = styled.button`
   padding: 5px;
   margin-left: 4px;
   cursor: pointer;
-  background-color: rgba(43, 144, 217, 0.5);
-  &:hover {
-    background-color: rgba(43, 144, 217, 1);
-  }
+  background-color: rgba(43, 144, 217, 1);
   &:focus {
     outline: 2px solid transparent;
     outline-offset: 2px;

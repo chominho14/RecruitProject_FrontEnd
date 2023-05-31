@@ -345,7 +345,7 @@ function Application() {
               <span style={{ color: "#ff7f00" }}>*</span>
               <ApplyFormLabelDetail>- pdf, docx, hwp 가능</ApplyFormLabelDetail>
               <ApplyFormLabelDetail>
-                - 여러장은 압축하여 업로드해주세요.
+                - 여러 장은 압축하여 업로드해 주세요.
               </ApplyFormLabelDetail>
             </ApplyFormLabel>
           </ApplyFormLabelDiv>

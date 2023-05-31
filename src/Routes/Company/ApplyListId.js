@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchPositionDetail, fetchResumeList } from "../../Libs/api";
 import { useRecoilValue } from "recoil";
 import { resizeState } from "../../atom";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 import Loading from "../../Components/Loading";
 import { useParams } from "react-router-dom";
