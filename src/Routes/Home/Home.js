@@ -57,7 +57,8 @@ const HomeMobileFotterContainer = styled.footer`
   width: 100%;
   height: 150px;
   bottom: 0px;
-  position: absolute;
+  /* position: absolute; */
+  position: sticky;
   background-color: rgba(0, 0, 0, 0.1);
   text-align: center;
   padding-top: 20px;
