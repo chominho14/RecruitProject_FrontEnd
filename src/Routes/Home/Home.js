@@ -44,7 +44,7 @@ const ApplyPositionNoData = styled.div`
 const HomeFotterContainer = styled.footer`
   width: 100%;
   height: 100px;
-  bottom: 0px;
+  bottom: 0;
   position: absolute;
   background-color: rgba(0, 0, 0, 0.1);
   text-align: center;
