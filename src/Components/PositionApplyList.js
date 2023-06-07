@@ -57,8 +57,12 @@ const PositionApplyListResumeDownDiv = styled.div`
 function PositionApplyList({ id, name, studentId, resumeName }) {
   const downloadResumeClick = (resumeName) => {
     if (resumeName) {
+      // const url =
+      //   "http://localhost:8080/api/company/resume?filename=" + resumeName;
       const url =
-        "http://localhost:8080/api/company/resume?filename=" + resumeName;
+        process.env.REACT_APP_API_URL +
+        "/company/resume?filename=" +
+        resumeName;
       const download = document.createElement("a");
 
       download.href = url;
