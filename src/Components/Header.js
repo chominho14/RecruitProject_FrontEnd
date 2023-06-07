@@ -229,6 +229,9 @@ function Header() {
 
   return (
     <>
+      <head>
+        <title>Inhatc Recruit Site</title>
+      </head>
       {large === "Web" ? (
         <>
           <WebNav>
