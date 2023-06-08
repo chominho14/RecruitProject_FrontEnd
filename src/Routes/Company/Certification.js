@@ -165,122 +165,55 @@ const ErrorMessageSpan = styled.span`
   border-color: red;
 `;
 
-const CompanyCertificationDiv = styled.div`
-  cursor: pointer;
-  background-color: white;
-  padding: 0 0.5rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  text-decoration: underline;
-  text-underline-offset: 1px;
-`;
-
-function Login() {
-  const { register, handleSubmit } = useForm();
+function Certification() {
+  const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
-  const [login, { loading, data }] = useMutations("/login");
+
   const large = useRecoilValue(resizeState);
 
-  const onValid = (data) => {
-    if (loading) return;
-    login({ ...data });
-  };
-
   const loginExist = localStorage.getItem("userData");
+
+  const onValid = ({ password }) => {
+    console.log(password);
+    if (password === "inhatc!@34") {
+      navigate("/company/companyjoin");
+    } else {
+      alert("인증 코드를 확인해 주세요.");
+      reset();
+    }
+  };
 
   useEffect(() => {
     if (loginExist) {
       alert("이미 로그인 되어있습니다.");
       return navigate("/");
     }
-    if (data?.code === "ok") {
-      localStorage.setItem("userData", data.email);
-      localStorage.setItem("userRoles", data.authority);
-      navigate("/");
-    } else {
-      navigate("/login");
-    }
-  }, [data, loginExist, navigate]);
-
-  const onClickCompanyJoin = () => {
-    navigate("/company/certification");
-  };
+  }, [navigate, loginExist]);
 
   return (
     <LoginContainer>
-      <LoginTitle>로그인</LoginTitle>
+      <LoginTitle>기업회원 인증</LoginTitle>
       <LoginSub>
         <LoginSubTitleContainer>
-          <LoginSubTitle>채용 웹사이트 로그인하기</LoginSubTitle>
+          <LoginSubTitle>인증 코드를 입력해 주세요.</LoginSubTitle>
         </LoginSubTitleContainer>
       </LoginSub>
       <LoginMainForm onSubmit={handleSubmit(onValid)}>
-        <ErrorMessageSpan>{data?.message}</ErrorMessageSpan>
-        <LoginInput
-          {...register("email", { required: true })}
-          required
-          name="email"
-          type="email"
-          placeholder="이메일"
-        />
         <LoginInput
           {...register("password", { required: true })}
           required
           name="password"
           type="password"
-          placeholder="비밀번호"
+          placeholder="인증 코드"
         />
         {large === "Mobile" ? (
-          <LoginMobileBtn>{loading ? "로딩 중..." : "로그인"}</LoginMobileBtn>
+          <LoginMobileBtn>코드 확인</LoginMobileBtn>
         ) : (
-          <LoginBtn>{loading ? "로딩 중..." : "로그인"}</LoginBtn>
+          <LoginBtn>코드 확인</LoginBtn>
         )}
       </LoginMainForm>
-      <AnotherPageContainer>
-        <AnotherPageSubContainer>
-          <AnotherPageHr />
-
-          <AnotherPageOr>
-            <AnoyherPageOrSpan>또는</AnoyherPageOrSpan>
-          </AnotherPageOr>
-        </AnotherPageSubContainer>
-        <AnotherPageGoDiv>
-          <AnotherPageGoSpan>계정이 없으신가요?</AnotherPageGoSpan>
-          <Link
-            to={"/join"}
-            style={{
-              backgroundColor: "white",
-              paddingLeft: "0.5rem",
-              paddingRight: "0.5rem",
-              fontSize: "0.875rem",
-              lineHeight: "1.25rem",
-              textDecorationLine: "underline",
-              textUnderlineOffset: "1px",
-            }}
-          >
-            회원가입
-          </Link>
-        </AnotherPageGoDiv>
-        <AnotherPageGoDiv>
-          <AnotherPageGoSpan>기업회원이신가요?</AnotherPageGoSpan>
-          <Link
-            to={"/company/certification"}
-            style={{
-              backgroundColor: "white",
-              paddingLeft: "0.5rem",
-              paddingRight: "0.5rem",
-              fontSize: "0.875rem",
-              lineHeight: "1.25rem",
-              textDecorationLine: "underline",
-              textUnderlineOffset: "1px",
-            }}
-          >
-            기업회원가입
-          </Link>
-        </AnotherPageGoDiv>
-      </AnotherPageContainer>
     </LoginContainer>
   );
 }
 
-export default Login;
+export default Certification;

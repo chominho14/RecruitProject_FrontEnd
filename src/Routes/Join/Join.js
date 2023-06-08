@@ -270,7 +270,7 @@ function Join() {
         <AnotherPageGoDiv>
           <AnotherPageGoSpan>기업회원이신가요?</AnotherPageGoSpan>
           <Link
-            to={"/company/companyjoin"}
+            to={"/company/certification"}
             style={{
               backgroundColor: "white",
               paddingLeft: "0.5rem",

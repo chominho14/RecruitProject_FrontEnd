@@ -17,6 +17,7 @@ import NotFound from "./NotFound";
 import ApplyListId from "../Routes/Company/ApplyListId";
 import Saves from "../Routes/Profile/Saves";
 import PositionModify from "../Routes/Position/PositionModify";
+import Certification from "../Routes/Company/Certification";
 
 const router = createBrowserRouter([
   {
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
       {
         path: "company/companyjoin",
         element: <CompanyJoin />,
+      },
+      {
+        path: "company/certification",
+        element: <Certification />,
       },
       {
         path: "company/positionList",
