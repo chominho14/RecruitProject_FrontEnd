@@ -16,6 +16,7 @@ import ErrorComponent from "./ErrorComponent";
 import NotFound from "./NotFound";
 import ApplyListId from "../Routes/Company/ApplyListId";
 import Saves from "../Routes/Profile/Saves";
+import PositionModify from "../Routes/Position/PositionModify";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "position/:positionId",
         element: <Position />,
+      },
+      {
+        path: "position/modify/:positionId",
+        element: <PositionModify />,
       },
       {
         path: "login",

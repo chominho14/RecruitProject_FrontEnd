@@ -359,13 +359,31 @@ const PositionMobileApplyCompleteBtn = styled.div`
   background-color: #d9e1e8;
 `;
 
-// position 삭제 버튼
+// position 삭제, 수정 버튼
 const PositionDeleteDiv = styled.div`
   cursor: pointer;
   width: 55px;
   height: 35px;
   padding-top: 10px;
+  margin: 2px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.5);
+  border-radius: 6px;
+  float: right;
+  background-color: rgba(0, 0, 0, 0.1);
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+`;
 
+const PositionPutDiv = styled.div`
+  cursor: pointer;
+  width: 55px;
+  height: 35px;
+  padding-top: 10px;
+  margin: 2px;
   text-align: center;
   font-weight: 600;
   font-size: 13px;
@@ -464,6 +482,20 @@ function Position() {
     navigate("/");
   };
 
+  const onPositionModify = () => {
+    navigate(`/position/modify/${positionId}`, {
+      state: {
+        title: positionData?.data?.positionTitle,
+        salary: positionData?.data?.salary,
+        endDay: positionData?.data?.deadline,
+        introduction: positionData?.data?.description,
+        region: positionData?.data?.region,
+        field: positionData?.data?.field,
+        skilled: positionData?.data?.skilled,
+      },
+    });
+  };
+
   return (
     <>
       {isLoading ? (
@@ -488,9 +520,14 @@ function Position() {
               </PoositionTopPositionTitleDiv>
               <div>
                 {positionData?.data?.email === sessionEmail ? (
-                  <PositionDeleteDiv onClick={onPositionDelete}>
-                    삭제
-                  </PositionDeleteDiv>
+                  <>
+                    <PositionDeleteDiv onClick={onPositionDelete}>
+                      삭제
+                    </PositionDeleteDiv>
+                    <PositionPutDiv onClick={onPositionModify}>
+                      수정
+                    </PositionPutDiv>
+                  </>
                 ) : null}
               </div>
             </PositionTopPositionTitleContainer>
