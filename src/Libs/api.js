@@ -108,6 +108,6 @@ export async function fetchSaveList() {
 // 홈 화면 페지네이션 적용
 export async function fetchHomePositionsPagi(page) {
   return fetch(
-    process.env.REACT_APP_API_URL + `/test/home?page=${page}&size=8`
+    process.env.REACT_APP_API_URL + `/home?page=${page}&size=8`
   ).then((res) => res.json());
 }

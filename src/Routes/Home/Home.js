@@ -58,8 +58,6 @@ const HomeMobileFotterContainer = styled.footer`
 
 const HomeFotterContainer = styled.footer`
   width: 100%;
-  height: 100px;
-  bottom: 0;
   display: flex;
   justify-content: center;
   height: 100px;
@@ -90,8 +88,6 @@ function Home() {
     ["allPosition", page - 1],
     () => fetchHomePositionsPagi(page - 1)
   );
-
-  console.log(allPositionData);
 
   return (
     <>
