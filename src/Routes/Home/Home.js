@@ -5,14 +5,16 @@ import { resizeState } from "../../atom";
 import Loading from "../../Components/Loading";
 import PositionItem from "../../Components/Position-item";
 import PositionHomeMobile from "../../Components/PositionHome";
-import { fetchHomePositions } from "../../Libs/api";
+import { fetchHomePositionsPagi } from "../../Libs/api";
+import { useState } from "react";
+import Pagination from "react-js-pagination";
+import "./Paging.css";
 
 const HomeContainer = styled.div`
   width: 85%;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  padding-bottom: 80px;
 `;
 
 const MainCompanyInfoContainer = styled.div`
@@ -20,7 +22,7 @@ const MainCompanyInfoContainer = styled.div`
 `;
 
 const CompanyInfoGrid = styled.div`
-  margin-top: 100px;
+  margin-top: 120px;
   margin-bottom: 50px;
   display: grid;
   grid-template-columns: repeat(auto-fill, 280px);
@@ -41,11 +43,12 @@ const ApplyPositionNoData = styled.div`
   color: rgba(0, 0, 0, 0.5);
 `;
 
-const HomeFotterContainer = styled.footer`
+const HomeMobileFotterContainer = styled.footer`
   width: 100%;
-  height: 100px;
-  bottom: 0;
-  position: absolute;
+  height: 150px;
+  bottom: 0px;
+  display: flex;
+  justify-content: center;
   background-color: rgba(0, 0, 0, 0.1);
   text-align: center;
   padding-top: 20px;
@@ -53,26 +56,42 @@ const HomeFotterContainer = styled.footer`
   font-weight: 400;
 `;
 
-const HomeMobileFotterContainer = styled.footer`
+const HomeFotterContainer = styled.footer`
   width: 100%;
-  height: 150px;
-  bottom: 0px;
-  /* position: absolute; */
-  position: sticky;
+  height: 100px;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  height: 100px;
   background-color: rgba(0, 0, 0, 0.1);
   text-align: center;
   padding-top: 20px;
   color: rgba(0, 0, 0, 0.3);
   font-weight: 400;
+`;
+
+const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  bottom: 120px;
 `;
 
 function Home() {
   const large = useRecoilValue(resizeState);
 
+  // 페이징
+  const [page, setPage] = useState(1);
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
+
   const { data: allPositionData, isLoading } = useQuery(
-    ["allPosition"],
-    fetchHomePositions
+    ["allPosition", page - 1],
+    () => fetchHomePositionsPagi(page - 1)
   );
+
+  console.log(allPositionData);
 
   return (
     <>
@@ -109,31 +128,6 @@ function Home() {
                       positionRegion={position.positionRegion}
                     />
                   ))}
-                  {/* {allPositionData?.data?.map((position) => (
-                <PositionItem
-                  id={position.id}
-                  key={position.id}
-                  positionImage={position.positionImage}
-                  companyName={position.company.companyName}
-                  positionTitle={position.positionTitle}
-                  positionSkilled={position.skilled}
-                  positionRegion={position.region}
-                />
-              ))}
-            </CompanyInfoGrid>
-          ) : (
-            <CompanyInfoMobile>
-              {allPositionData?.data?.map((position) => (
-                <PositionHomeMobile
-                  id={position.id}
-                  key={position.id}
-                  positionImage={position.positionImage}
-                  companyName={position.company.companyName}
-                  positionTitle={position.positionTitle}
-                  positionSkilled={position.skilled}
-                  positionRegion={position.region}
-                />
-              ))} */}
                 </CompanyInfoMobile>
               )}
             </>
@@ -147,11 +141,35 @@ function Home() {
         </MainCompanyInfoContainer>
       </HomeContainer>
       {large === "Mobile" ? (
-        <HomeMobileFotterContainer>
-          ©202347024. Chominho.
-        </HomeMobileFotterContainer>
+        <>
+          <Pagination
+            activePage={page}
+            itemsCountPerPage={8}
+            totalItemsCount={allPositionData?.data2}
+            pageRangeDisplayed={5}
+            prevPageText={"<"}
+            nextPageText={">"}
+            onChange={handlePageChange}
+          />
+          <HomeMobileFotterContainer>
+            ©202347024. Chominho.
+          </HomeMobileFotterContainer>
+        </>
       ) : (
-        <HomeFotterContainer>©202347024. Chominho.</HomeFotterContainer>
+        <>
+          <PaginationContainer>
+            <Pagination
+              activePage={page}
+              itemsCountPerPage={8}
+              totalItemsCount={allPositionData?.data2}
+              pageRangeDisplayed={5}
+              prevPageText={"<"}
+              nextPageText={">"}
+              onChange={handlePageChange}
+            />
+          </PaginationContainer>
+          <HomeFotterContainer>©202347024. Chominho.</HomeFotterContainer>
+        </>
       )}
     </>
   );
