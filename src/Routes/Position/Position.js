@@ -116,6 +116,7 @@ const PositionWebMiddleLeftDescription = styled.div`
   width: 95%;
   font-weight: 300;
   margin-bottom: 10px;
+  white-space: pre;
 `;
 
 const PositionWebMiddleLeftSKill = styled.div`
