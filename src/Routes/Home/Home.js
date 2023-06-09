@@ -14,6 +14,7 @@ const HomeContainer = styled.div`
   width: 85%;
   max-width: 1200px;
   margin-left: auto;
+  min-height: 534px;
   margin-right: auto;
 `;
 
@@ -41,6 +42,7 @@ const ApplyPositionNoData = styled.div`
   font-size: 15px;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.5);
+  min-height: 480px;
 `;
 
 const HomeMobileFotterContainer = styled.footer`
@@ -56,6 +58,8 @@ const HomeMobileFotterContainer = styled.footer`
   font-weight: 400;
 `;
 
+const HomeWebFooterContainer = styled.div``;
+
 const HomeFotterContainer = styled.footer`
   width: 100%;
   display: flex;
@@ -66,6 +70,8 @@ const HomeFotterContainer = styled.footer`
   padding-top: 20px;
   color: rgba(0, 0, 0, 0.3);
   font-weight: 400;
+  position: relative;
+  transform: translateY(0%);
 `;
 
 const PaginationContainer = styled.div`
@@ -164,6 +170,7 @@ function Home() {
               onChange={handlePageChange}
             />
           </PaginationContainer>
+          <HomeWebFooterContainer></HomeWebFooterContainer>
           <HomeFotterContainer>©202347024. Chominho.</HomeFotterContainer>
         </>
       )}
