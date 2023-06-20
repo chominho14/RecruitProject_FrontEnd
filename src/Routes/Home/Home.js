@@ -92,8 +92,16 @@ const HomeSearchRightRight = styled.div`
   padding-top: 6px;
 `;
 
+// const CompanyInfoGrid = styled.div`
+//   margin-top: 40px;
+//   margin-bottom: 50px;
+//   display: grid;
+//   grid-template-columns: repeat(auto-fill, 280px);
+//   grid-gap: 25px;
+// `;
+
 const CompanyInfoGrid = styled.div`
-  margin-top: 40px;
+  margin-top: 120px;
   margin-bottom: 50px;
   display: grid;
   grid-template-columns: repeat(auto-fill, 280px);
