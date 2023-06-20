@@ -67,7 +67,7 @@ const ProfileMobileLogoutBtn = styled.button`
 
 const ProfileSavesDiv = styled.button`
   color: white;
-  margin-top: 60px;
+  margin-top: 80px;
   border: 1px;
   border-color: transparent;
   border-radius: 0.375rem;
@@ -79,9 +79,9 @@ const ProfileSavesDiv = styled.button`
   padding: 12px;
   text-align: center;
   cursor: pointer;
-  background-color: #d9e1e8;
+  background-color: rgba(0, 0, 0, 0.2);
   &:hover {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.4);
   }
   &:focus {
     outline: 2px solid transparent;
@@ -92,7 +92,7 @@ const ProfileSavesDiv = styled.button`
 
 const ProfileMobileSavesDiv = styled.button`
   color: white;
-  margin-top: 60px;
+  margin-top: 80px;
   border: 1px;
   border-color: transparent;
   border-radius: 0.375rem;
@@ -138,6 +138,7 @@ function Profile() {
   const handleToSaves = () => {
     navigate("/profile/saves");
   };
+
   return (
     <ProfileContainer>
       <Outlet />
@@ -145,13 +146,17 @@ function Profile() {
         {user?.authority === "ROLE_USER" ? (
           <>
             {large === "Mobile" ? (
-              <ProfileMobileSavesDiv onClick={handleToSaves}>
-                내가 저장한 채용공고
-              </ProfileMobileSavesDiv>
+              <>
+                <ProfileMobileSavesDiv onClick={handleToSaves}>
+                  내가 저장한 채용공고
+                </ProfileMobileSavesDiv>
+              </>
             ) : (
-              <ProfileSavesDiv onClick={handleToSaves}>
-                내가 저장한 채용공고
-              </ProfileSavesDiv>
+              <>
+                <ProfileSavesDiv onClick={handleToSaves}>
+                  내가 저장한 채용공고
+                </ProfileSavesDiv>
+              </>
             )}
           </>
         ) : null}

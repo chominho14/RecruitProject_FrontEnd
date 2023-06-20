@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import useMutations from "../../Libs/useMutations";
 import { useRecoilValue } from "recoil";
 import { resizeState } from "../../atom";
 
@@ -114,55 +113,6 @@ const LoginMobileBtn = styled.button`
     outline-offset: 2px;
     border-width: 2px;
   }
-`;
-
-const AnotherPageContainer = styled.div`
-  margin-top: 32px;
-`;
-
-const AnotherPageSubContainer = styled.div`
-  margin-top: 32px;
-`;
-
-const AnotherPageHr = styled.hr`
-  width: 60%;
-  max-width: 400px;
-`;
-
-const AnotherPageOr = styled.div`
-  top: -17px;
-  text-align: center;
-`;
-
-const AnoyherPageOrSpan = styled.span`
-  background-color: white;
-  padding-left: 8px;
-  padding-right: 8px;
-  font-size: 14px;
-  line-height: 20px;
-  color: gray;
-`;
-
-const AnotherPageGoDiv = styled.div`
-  text-align: center;
-  margin-top: 20px;
-`;
-
-const AnotherPageGoSpan = styled.span`
-  background-color: white;
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: gray;
-`;
-
-const ErrorMessageSpan = styled.span`
-  color: red;
-  font-size: large;
-  font-weight: 400;
-  border-width: 1px;
-  border-color: red;
 `;
 
 function Certification() {

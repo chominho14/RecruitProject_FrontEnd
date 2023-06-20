@@ -435,7 +435,7 @@ function Position() {
     }
     setTimeout(() => {
       refetch();
-    }, 50);
+    }, 100);
   };
 
   // 저장 버튼 옵티미스틱 UI
@@ -456,6 +456,9 @@ function Position() {
         return {
           prevCata,
         };
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries(["positionData", positionId]);
       },
     }
   );
@@ -496,6 +499,7 @@ function Position() {
       },
     });
   };
+  console.log(positionData);
 
   return (
     <>
@@ -594,7 +598,7 @@ function Position() {
                   </PositionWebMiddleRightDesContainer>
                   <PositionWebMiddleRightBtnContainer>
                     <PositionWebSaveBtn
-                      liked={positionData.data2}
+                      liked={positionData?.data2}
                       onClick={onSaveClick}
                     >
                       <BsBookmarkCheckFill />

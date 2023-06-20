@@ -165,16 +165,6 @@ const ErrorMessageSpan = styled.span`
   border-color: red;
 `;
 
-const CompanyCertificationDiv = styled.div`
-  cursor: pointer;
-  background-color: white;
-  padding: 0 0.5rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  text-decoration: underline;
-  text-underline-offset: 1px;
-`;
-
 function Login() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
@@ -201,10 +191,6 @@ function Login() {
       navigate("/login");
     }
   }, [data, loginExist, navigate]);
-
-  const onClickCompanyJoin = () => {
-    navigate("/company/certification");
-  };
 
   return (
     <LoginContainer>
