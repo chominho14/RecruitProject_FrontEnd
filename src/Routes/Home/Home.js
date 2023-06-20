@@ -155,12 +155,12 @@ function Home() {
   const large = useRecoilValue(resizeState);
 
   // 검색 기능
-  const [searchData, setSearchData] = useState("");
+  // const [searchData, setSearchData] = useState("");
 
-  const onSearchChange = (e) => {
-    console.log(e.target.value);
-    setSearchData(e.target.value);
-  };
+  // const onSearchChange = (e) => {
+  //   console.log(e.target.value);
+  //   setSearchData(e.target.value);
+  // };
 
   // 페이징
   const [page, setPage] = useState(1);
@@ -183,7 +183,7 @@ function Home() {
             <>
               {large === "Web" ? (
                 <>
-                  <HomeSearchContainer>
+                  {/* <HomeSearchContainer>
                     <HomeSearchIconsContainer>
                       <AiOutlineSearch />
                     </HomeSearchIconsContainer>
@@ -198,7 +198,7 @@ function Home() {
                         <AiOutlineSearch />
                       </HomeSearchRightRight>
                     </HomeSearchButtonContainer>
-                  </HomeSearchContainer>
+                  </HomeSearchContainer> */}
                   <CompanyInfoGrid>
                     {allPositionData?.data?.map((position) => (
                       <PositionItem
@@ -215,7 +215,7 @@ function Home() {
                 </>
               ) : (
                 <>
-                  <HomeSearchContainer>
+                  {/* <HomeSearchContainer>
                     <HomeSearchIconsContainer>
                       <AiOutlineSearch />
                     </HomeSearchIconsContainer>
@@ -226,7 +226,7 @@ function Home() {
                         <AiOutlineSearch />
                       </HomeSearchRightRight>
                     </HomeSearchButtonContainer>
-                  </HomeSearchContainer>
+                  </HomeSearchContainer> */}
                   <CompanyInfoMobile>
                     {allPositionData?.data?.map((position) => (
                       <PositionHomeMobile
