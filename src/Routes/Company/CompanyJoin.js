@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useMutations from "../../Libs/useMutations";
 import { resizeState } from "../../atom";
@@ -173,12 +173,19 @@ function CompanyJoin() {
   const navigate = useNavigate();
   const large = useRecoilValue(resizeState);
 
+  // company join 보안 - url로 접근하는 유저 막기
+  const { state } = useLocation();
+
   const onValid = (data) => {
     if (loading) return;
     join({ ...data });
   };
   const loginExist = localStorage.getItem("userData");
   useEffect(() => {
+    if (state !== process.env.REACT_APP_COMPANY_KEY) {
+      alert("잘못된 접근입니다.");
+      return navigate("/");
+    }
     if (loginExist) {
       alert("이미 로그인 되어있습니다.");
       return navigate("/");

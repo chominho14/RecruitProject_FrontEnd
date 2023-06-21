@@ -173,7 +173,6 @@ function Home() {
   const { register, handleSubmit } = useForm();
 
   const onValid = (data) => {
-    console.log(data.keyword);
     setSearchData(data.keyword);
   };
 
@@ -187,7 +186,6 @@ function Home() {
     ["allPosition", page - 1, searchData],
     () => fetchHomePositionsPagiSearchTest(page - 1, searchData)
   );
-  console.log(allPositionData);
 
   return (
     <>

@@ -124,9 +124,10 @@ function Certification() {
   const loginExist = localStorage.getItem("userData");
 
   const onValid = ({ password }) => {
-    console.log(password);
     if (password === process.env.REACT_APP_COMPANY_KEY) {
-      navigate("/company/companyjoin");
+      navigate("/company/companyjoin", {
+        state: password,
+      });
     } else {
       alert("인증 코드를 확인해 주세요.");
       reset();
