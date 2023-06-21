@@ -384,13 +384,6 @@ function Upload() {
       };
       formData.append("stringPositionDto", JSON.stringify(positionDto));
 
-      // axios
-      //   .post("http://localhost:8080/api/company/upload", formData, {
-      //     headers: { Authorization: localStorage.getItem("userData") },
-      //   })
-      //   .then((res) => {
-      //     setData(res.data);
-      //   });
       axios
         .post(process.env.REACT_APP_API_URL + "/company/upload", formData, {
           headers: { Authorization: localStorage.getItem("userData") },
@@ -410,13 +403,7 @@ function Upload() {
         field,
       };
       formData.append("stringPositionDto", JSON.stringify(positionDto));
-      // axios
-      //   .post("http://localhost:8080/api/company/upload", formData, {
-      //     headers: { Authorization: localStorage.getItem("userData") },
-      //   })
-      //   .then((res) => {
-      //     setData(res.data);
-      //   });
+
       axios
         .post(process.env.REACT_APP_API_URL + "/company/upload", formData, {
           headers: { Authorization: localStorage.getItem("userData") },

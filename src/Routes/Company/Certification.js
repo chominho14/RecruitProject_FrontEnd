@@ -125,7 +125,7 @@ function Certification() {
 
   const onValid = ({ password }) => {
     console.log(password);
-    if (password === "inhatc!@34") {
+    if (password === process.env.REACT_APP_COMPANY_KEY) {
       navigate("/company/companyjoin");
     } else {
       alert("인증 코드를 확인해 주세요.");

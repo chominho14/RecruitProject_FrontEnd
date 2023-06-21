@@ -5,11 +5,12 @@ import { resizeState } from "../../atom";
 import Loading from "../../Components/Loading";
 import PositionItem from "../../Components/Position-item";
 import PositionHomeMobile from "../../Components/PositionHome";
-import { fetchHomePositionsPagi } from "../../Libs/api";
+import { fetchHomePositionsPagiSearchTest } from "../../Libs/api";
 import { useState } from "react";
 import Pagination from "react-js-pagination";
 import "./Paging.css";
 import { AiOutlineSearch } from "react-icons/ai";
+import { useForm } from "react-hook-form";
 
 const HomeContainer = styled.div`
   width: 85%;
@@ -37,7 +38,7 @@ const HomeSearchContainer = styled.div`
 const HomeSearchIconsContainer = styled.div`
   font-size: x-large;
   padding-top: 5px;
-  width: 5%;
+  width: 40px;
 `;
 
 const HomeSearchInput = styled.input`
@@ -59,18 +60,20 @@ const HomeSearchInput = styled.input`
   }
 `;
 
-const HomeSearchButtonContainer = styled.div`
+const HomeSearchForm = styled.form`
+  display: flex;
+  width: 100%;
+`;
+
+const HomeSearchButtonContainer = styled.button`
   width: 80px;
   display: flex;
   border-radius: 20px;
   color: white;
   background-color: rgba(43, 144, 217, 0.7);
   border-color: rgba(43, 144, 217, 1);
-
   padding-left: 12px;
-
   cursor: pointer;
-  padding-top: 3px;
   &:hover {
     background-color: rgba(43, 144, 217, 1);
   }
@@ -92,16 +95,8 @@ const HomeSearchRightRight = styled.div`
   padding-top: 6px;
 `;
 
-// const CompanyInfoGrid = styled.div`
-//   margin-top: 40px;
-//   margin-bottom: 50px;
-//   display: grid;
-//   grid-template-columns: repeat(auto-fill, 280px);
-//   grid-gap: 25px;
-// `;
-
 const CompanyInfoGrid = styled.div`
-  margin-top: 120px;
+  margin-top: 40px;
   margin-bottom: 50px;
   display: grid;
   grid-template-columns: repeat(auto-fill, 280px);
@@ -109,6 +104,17 @@ const CompanyInfoGrid = styled.div`
 `;
 
 // 모바일 화면
+
+const HomeSearchMobileContainer = styled.div`
+  margin-top: 40px;
+  border-radius: 6px;
+  padding: 10px;
+  border: 2px solid;
+  border-color: #e2e2e2;
+  display: flex;
+  height: 60px;
+`;
+
 const CompanyInfoMobile = styled.div`
   display: flex;
   flex-direction: column;
@@ -163,12 +169,13 @@ function Home() {
   const large = useRecoilValue(resizeState);
 
   // 검색 기능
-  // const [searchData, setSearchData] = useState("");
+  const [searchData, setSearchData] = useState("");
+  const { register, handleSubmit } = useForm();
 
-  // const onSearchChange = (e) => {
-  //   console.log(e.target.value);
-  //   setSearchData(e.target.value);
-  // };
+  const onValid = (data) => {
+    console.log(data.keyword);
+    setSearchData(data.keyword);
+  };
 
   // 페이징
   const [page, setPage] = useState(1);
@@ -177,9 +184,10 @@ function Home() {
   };
 
   const { data: allPositionData, isLoading } = useQuery(
-    ["allPosition", page - 1],
-    () => fetchHomePositionsPagi(page - 1)
+    ["allPosition", page - 1, searchData],
+    () => fetchHomePositionsPagiSearchTest(page - 1, searchData)
   );
+  console.log(allPositionData);
 
   return (
     <>
@@ -191,22 +199,25 @@ function Home() {
             <>
               {large === "Web" ? (
                 <>
-                  {/* <HomeSearchContainer>
+                  <HomeSearchContainer>
                     <HomeSearchIconsContainer>
                       <AiOutlineSearch />
                     </HomeSearchIconsContainer>
-                    <HomeSearchInput
-                      type="text"
-                      onChange={onSearchChange}
-                      value={searchData}
-                    ></HomeSearchInput>
-                    <HomeSearchButtonContainer>
-                      <HomeSearchRightLeft>검색</HomeSearchRightLeft>
-                      <HomeSearchRightRight>
-                        <AiOutlineSearch />
-                      </HomeSearchRightRight>
-                    </HomeSearchButtonContainer>
-                  </HomeSearchContainer> */}
+                    <HomeSearchForm onSubmit={handleSubmit(onValid)}>
+                      <HomeSearchInput
+                        {...register("keyword")}
+                        name="keyword"
+                        type="text"
+                        placeholder="키워드"
+                      />
+                      <HomeSearchButtonContainer>
+                        <HomeSearchRightLeft>검색</HomeSearchRightLeft>
+                        <HomeSearchRightRight>
+                          <AiOutlineSearch />
+                        </HomeSearchRightRight>
+                      </HomeSearchButtonContainer>
+                    </HomeSearchForm>
+                  </HomeSearchContainer>
                   <CompanyInfoGrid>
                     {allPositionData?.data?.map((position) => (
                       <PositionItem
@@ -223,18 +234,25 @@ function Home() {
                 </>
               ) : (
                 <>
-                  {/* <HomeSearchContainer>
+                  <HomeSearchMobileContainer>
                     <HomeSearchIconsContainer>
                       <AiOutlineSearch />
                     </HomeSearchIconsContainer>
-                    <HomeSearchInput></HomeSearchInput>
-                    <HomeSearchButtonContainer>
-                      <HomeSearchRightLeft>검색</HomeSearchRightLeft>
-                      <HomeSearchRightRight>
-                        <AiOutlineSearch />
-                      </HomeSearchRightRight>
-                    </HomeSearchButtonContainer>
-                  </HomeSearchContainer> */}
+                    <HomeSearchForm onSubmit={handleSubmit(onValid)}>
+                      <HomeSearchInput
+                        {...register("keyword")}
+                        name="keyword"
+                        type="text"
+                        placeholder="키워드"
+                      />
+                      <HomeSearchButtonContainer>
+                        <HomeSearchRightLeft>검색</HomeSearchRightLeft>
+                        <HomeSearchRightRight>
+                          <AiOutlineSearch />
+                        </HomeSearchRightRight>
+                      </HomeSearchButtonContainer>
+                    </HomeSearchForm>
+                  </HomeSearchMobileContainer>
                   <CompanyInfoMobile>
                     {allPositionData?.data?.map((position) => (
                       <PositionHomeMobile
@@ -265,14 +283,16 @@ function Home() {
           <Pagination
             activePage={page}
             itemsCountPerPage={8}
-            totalItemsCount={allPositionData?.data2}
+            totalItemsCount={
+              allPositionData?.data2 === undefined ? 0 : allPositionData?.data2
+            }
             pageRangeDisplayed={5}
             prevPageText={"<"}
             nextPageText={">"}
             onChange={handlePageChange}
           />
           <HomeMobileFotterContainer>
-            ©202347024. Chominho.
+            ©202347024 chominho.
           </HomeMobileFotterContainer>
         </>
       ) : (
@@ -281,7 +301,11 @@ function Home() {
             <Pagination
               activePage={page}
               itemsCountPerPage={8}
-              totalItemsCount={allPositionData?.data2}
+              totalItemsCount={
+                allPositionData?.data2 === undefined
+                  ? 0
+                  : allPositionData?.data2
+              }
               pageRangeDisplayed={5}
               prevPageText={"<"}
               nextPageText={">"}
@@ -289,7 +313,7 @@ function Home() {
             />
           </PaginationContainer>
           <HomeWebFooterContainer></HomeWebFooterContainer>
-          <HomeFotterContainer>©202347024. Chominho.</HomeFotterContainer>
+          <HomeFotterContainer>©202347024 chominho.</HomeFotterContainer>
         </>
       )}
     </>
