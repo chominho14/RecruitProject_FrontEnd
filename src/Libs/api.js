@@ -59,6 +59,6 @@ export async function fetchSaveList() {
 export async function fetchHomePositionsPagiSearchTest(page, keyword) {
   return fetch(
     process.env.REACT_APP_API_URL +
-      `/hometest?page=${page}&size=8&keyword=${keyword}`
+      `/home?page=${page}&size=8&keyword=${keyword}`
   ).then((res) => res.json());
 }
