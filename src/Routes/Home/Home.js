@@ -16,7 +16,7 @@ const HomeContainer = styled.div`
   width: 85%;
   max-width: 1200px;
   margin-left: auto;
-  min-height: 534px;
+  min-height: 555px;
   margin-right: auto;
 `;
 
