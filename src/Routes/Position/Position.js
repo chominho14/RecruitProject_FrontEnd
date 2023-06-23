@@ -499,7 +499,6 @@ function Position() {
       },
     });
   };
-  console.log(positionData);
 
   return (
     <>

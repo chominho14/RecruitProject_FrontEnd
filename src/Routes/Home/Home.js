@@ -115,6 +115,16 @@ const HomeSearchMobileContainer = styled.div`
   height: 60px;
 `;
 
+const HomeSearchMobileRightLeft = styled.div`
+  font-size: 12px;
+  padding-top: 7px;
+`;
+
+const HomeSearchMobileRightRight = styled.div`
+  font-size: 15px;
+  padding-top: 7px;
+`;
+
 const CompanyInfoMobile = styled.div`
   display: flex;
   flex-direction: column;
@@ -244,10 +254,12 @@ function Home() {
                         placeholder="키워드"
                       />
                       <HomeSearchButtonContainer>
-                        <HomeSearchRightLeft>검색</HomeSearchRightLeft>
-                        <HomeSearchRightRight>
+                        <HomeSearchMobileRightLeft>
+                          검색
+                        </HomeSearchMobileRightLeft>
+                        <HomeSearchMobileRightRight>
                           <AiOutlineSearch />
-                        </HomeSearchRightRight>
+                        </HomeSearchMobileRightRight>
                       </HomeSearchButtonContainer>
                     </HomeSearchForm>
                   </HomeSearchMobileContainer>
