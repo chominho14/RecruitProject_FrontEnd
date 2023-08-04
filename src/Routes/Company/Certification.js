@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useRecoilValue } from "recoil";
 import { resizeState } from "../../atom";
+import useMutations from "../../Libs/useMutations";
 
 const LoginContainer = styled.div`
   margin-top: 30px;
@@ -115,31 +116,62 @@ const LoginMobileBtn = styled.button`
   }
 `;
 
+const ErrorMessageSpan = styled.span`
+  color: red;
+  font-size: large;
+  font-weight: 400;
+  border-width: 1px;
+  border-color: red;
+`;
+
 function Certification() {
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
+  const [certification, { loading, data }] = useMutations(
+    "/company/companyCertification"
+  );
 
   const large = useRecoilValue(resizeState);
 
   const loginExist = localStorage.getItem("userData");
 
-  const onValid = ({ password }) => {
-    if (password === process.env.REACT_APP_COMPANY_KEY) {
-      navigate("/company/companyjoin", {
-        state: password,
-      });
-    } else {
-      alert("인증 코드를 확인해 주세요.");
-      reset();
-    }
+  // const onValid = ({ password }) => {
+  //   if (password === process.env.REACT_APP_COMPANY_KEY) {
+  //     navigate("/company/companyjoin", {
+  //       state: password,
+  //     });
+  //   } else {
+  //     alert("인증 코드를 확인해 주세요.");
+  //     reset();
+  //   }
+
+  // };
+  const onValid = (data) => {
+    if (loading) return;
+    certification({ ...data });
   };
+
+  // useEffect(() => {
+  //   if (loginExist) {
+  //     alert("이미 로그인 되어있습니다.");
+  //     return navigate("/");
+  //   }
+  // }, [navigate, loginExist]);
 
   useEffect(() => {
     if (loginExist) {
       alert("이미 로그인 되어있습니다.");
       return navigate("/");
     }
-  }, [navigate, loginExist]);
+    console.log(data);
+    if (data?.code === "ok") {
+      navigate("/company/companyjoin", {
+        state: process.env.REACT_APP_COMPANY_KEY,
+      });
+    } else {
+      navigate("/company/certification");
+    }
+  }, [data, loginExist, navigate]);
 
   return (
     <LoginContainer>
@@ -150,6 +182,7 @@ function Certification() {
         </LoginSubTitleContainer>
       </LoginSub>
       <LoginMainForm onSubmit={handleSubmit(onValid)}>
+        <ErrorMessageSpan>{data?.message}</ErrorMessageSpan>
         <LoginInput
           {...register("password", { required: true })}
           required
