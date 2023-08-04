@@ -163,7 +163,6 @@ function Certification() {
       alert("이미 로그인 되어있습니다.");
       return navigate("/");
     }
-    console.log(data);
     if (data?.code === "ok") {
       navigate("/company/companyjoin", {
         state: process.env.REACT_APP_COMPANY_KEY,
