@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { BsFileEarmarkPlus } from "react-icons/bs";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { resizeState } from "../../atom";
 import { IoIosArrowBack } from "react-icons/io";
@@ -255,8 +255,11 @@ function Application() {
   // form 백엔드 데이터 전송
   const { register, handleSubmit, watch, reset } = useForm();
   const [data, setData] = useState(null);
-  // 사진 첨부 시 사진 보이기
 
+  // 접근 보안 강화
+  const { state } = useLocation();
+
+  // 사진 첨부 시 사진 보이기
   const resume = watch("resume");
 
   const [resumePreview, setResumePreview] = useState("");
@@ -305,8 +308,13 @@ function Application() {
         });
     }
   };
+  console.log(state);
 
   useEffect(() => {
+    if (state !== positionId) {
+      alert("잘못된 접근입니다.");
+      return navigate(`/position/${positionId}`);
+    }
     if (data?.code === "ok") {
       navigate("/");
     } else {

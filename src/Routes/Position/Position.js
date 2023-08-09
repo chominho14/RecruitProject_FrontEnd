@@ -472,7 +472,9 @@ function Position() {
       return alert("지원한 채용공고는 다시 지원이 안 됩니다.");
     }
 
-    navigate(`/application/${positionId}`);
+    navigate(`/application/${positionId}`, {
+      state: positionId,
+    });
   };
 
   // 삭제 기능
