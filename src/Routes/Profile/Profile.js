@@ -90,9 +90,57 @@ const ProfileSavesDiv = styled.button`
   }
 `;
 
+const ProfileApplyDiv = styled.button`
+  color: white;
+  margin-top: 32px;
+  border: 1px;
+  border-color: transparent;
+  border-radius: 0.375rem;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  width: 60%;
+  max-width: 400px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.2);
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  &:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    border-width: 2px;
+  }
+`;
+
 const ProfileMobileSavesDiv = styled.button`
   color: white;
   margin-top: 80px;
+  border: 1px;
+  border-color: transparent;
+  border-radius: 0.375rem;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  width: 60%;
+  max-width: 400px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.3);
+
+  &:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    border-width: 2px;
+  }
+`;
+
+const ProfileMobileApplyDiv = styled.button`
+  color: white;
+  margin-top: 32px;
   border: 1px;
   border-color: transparent;
   border-radius: 0.375rem;
@@ -139,6 +187,10 @@ function Profile() {
     navigate("/profile/saves");
   };
 
+  const handleToApply = () => {
+    navigate("/profile/apply");
+  };
+
   return (
     <ProfileContainer>
       <Outlet />
@@ -150,12 +202,18 @@ function Profile() {
                 <ProfileMobileSavesDiv onClick={handleToSaves}>
                   내가 저장한 채용공고
                 </ProfileMobileSavesDiv>
+                <ProfileMobileApplyDiv onClick={handleToApply}>
+                  내가 지원한 채용공고
+                </ProfileMobileApplyDiv>
               </>
             ) : (
               <>
                 <ProfileSavesDiv onClick={handleToSaves}>
                   내가 저장한 채용공고
                 </ProfileSavesDiv>
+                <ProfileApplyDiv onClick={handleToApply}>
+                  내가 지원한 채용공고
+                </ProfileApplyDiv>
               </>
             )}
           </>

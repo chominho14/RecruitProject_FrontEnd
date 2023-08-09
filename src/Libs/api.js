@@ -62,3 +62,14 @@ export async function fetchHomePositionsPagiSearchTest(page, keyword) {
       `/home?page=${page}&size=8&keyword=${keyword}`
   ).then((res) => res.json());
 }
+
+// 유저가 지원완료한 채용공고 데이터 가져오기
+export async function fetchApplyList() {
+  const sessionEmail = localStorage.getItem("userData");
+  return fetch(process.env.REACT_APP_API_URL + "/profile/applyList", {
+    method: "GET",
+    headers: {
+      Authorization: sessionEmail,
+    },
+  }).then((res) => res.json());
+}

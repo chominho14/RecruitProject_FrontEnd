@@ -18,6 +18,7 @@ import ApplyListId from "../Routes/Company/ApplyListId";
 import Saves from "../Routes/Profile/Saves";
 import PositionModify from "../Routes/Position/PositionModify";
 import Certification from "../Routes/Company/Certification";
+import Apply from "../Routes/Profile/Apply";
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
       {
         path: "profile/saves",
         element: <Saves />,
+      },
+      {
+        path: "profile/apply",
+        element: <Apply />,
       },
       {
         path: "application/:positionId",
