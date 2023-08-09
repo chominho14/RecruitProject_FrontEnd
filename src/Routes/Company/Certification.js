@@ -168,9 +168,10 @@ function Certification() {
         state: process.env.REACT_APP_COMPANY_KEY,
       });
     } else {
+      reset();
       navigate("/company/certification");
     }
-  }, [data, loginExist, navigate]);
+  }, [data, loginExist, navigate, reset]);
 
   return (
     <LoginContainer>
