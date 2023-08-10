@@ -180,12 +180,10 @@ function CompanyJoin() {
     if (loading) return;
     join({ ...data });
   };
+
   const loginExist = localStorage.getItem("userData");
+
   useEffect(() => {
-    if (state !== process.env.REACT_APP_COMPANY_KEY) {
-      alert("잘못된 접근입니다.");
-      return navigate("/");
-    }
     if (loginExist) {
       alert("이미 로그인 되어있습니다.");
       return navigate("/");
@@ -196,6 +194,14 @@ function CompanyJoin() {
       navigate("/company/companyjoin");
     }
   }, [data, loginExist, navigate]);
+
+  //페이지 들어왔을 시 한 번만 실행
+  useEffect(() => {
+    if (state !== process.env.REACT_APP_COMPANY_KEY) {
+      alert("잘못된 접근입니다.");
+      return navigate("/");
+    }
+  }, []);
 
   return (
     <CompanyJoinContainer>

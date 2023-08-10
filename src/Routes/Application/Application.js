@@ -311,16 +311,20 @@ function Application() {
   console.log(state);
 
   useEffect(() => {
-    if (state !== positionId) {
-      alert("잘못된 접근입니다.");
-      return navigate(`/position/${positionId}`);
-    }
     if (data?.code === "ok") {
       navigate("/");
     } else {
       navigate(`/application/${positionId}`);
     }
   }, [data, navigate, positionId]);
+
+  //페이지 들어왔을 시 한 번만 실행
+  useEffect(() => {
+    if (state !== positionId) {
+      alert("잘못된 접근입니다.");
+      return navigate(`/position/${positionId}`);
+    }
+  }, []);
 
   // 뒤로가기
   const large = useRecoilValue(resizeState);
